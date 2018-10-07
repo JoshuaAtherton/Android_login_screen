@@ -3,6 +3,7 @@ package tcss450.uw.edu.phishapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,54 +40,59 @@ public class UserRegistrationFragment extends Fragment {
 
         // Add a listener for the register button
         Button b = (Button) v.findViewById(R.id.button_register_reg);
-        v.setOnClickListener(this::registerButtonClicked);
-
+        b.setOnClickListener(this::registerButtonClicked);
+        Log.d("UserRegistrationFragment", "creating view");
         return v;
     }
 
-    public void registerButtonClicked(View view) { //todo: refactor and fix
-        boolean usernameFilled = true, password1Filled = true, password2Filled = true;
-        boolean passwordsMatch = true, passwordLengthValid = true;
-        //are no fields blank
+    //for testing button
+    public void registerButtonClicked(View view) {
+        Log.d("UserRegistrationFragment", "Register button Clicked");
+
+        boolean noBlankFields = checkForBlankFields();
+        boolean passMatching, passlength = false;
+
+        //validate passwords
+        if (password1Text.getText().toString().equals(password2Text.getText().toString())) {
+            passMatching = true;
+            if (password1Text.getText().toString().length() >= 6) {
+                passlength = true;
+            } else {
+                password1Text.setError(getResources()
+                        .getString(R.string.password_too_short_prompt));
+                password2Text.setError(getResources()
+                        .getString(R.string.password_too_short_prompt));
+                passlength = false;
+            }
+        } else {
+            password1Text.setError(getResources()
+                    .getString(R.string.passwords_do_not_match_prompt));
+            password2Text.setError(getResources()
+                    .getString(R.string.passwords_do_not_match_prompt));
+            passMatching = false;
+        }
+        // if all fields are valid send message through interface
+        if (noBlankFields && passMatching && passlength) {
+            mListener.onFragmentInteractionRegClickedFromUserReg(
+                    usernameText.getText().toString(), password1Text.getText().toString());
+        }
+    }
+
+    private boolean checkForBlankFields() {
+        boolean username = true, pass1 = true, pass2 = true;
         if (UserLoginValidation.isFieldBlank(usernameText.getText().toString())) {
             usernameText.setError(getResources().getString(R.string.empty_field_prompt));
-            usernameFilled = false;
+            username = false;
         }
         if (UserLoginValidation.isFieldBlank(password1Text.getText().toString())) {
             password1Text.setError(getResources().getString(R.string.empty_field_prompt));
-            password1Filled = false;
+            pass1 = false;
         }
-        if (UserLoginValidation.isFieldBlank((password2Text.getText().toString()))) {
-            password2Text.setText(getResources().getText(R.string.empty_field_prompt));
-            password2Filled = false;
+        if (UserLoginValidation.isFieldBlank(password2Text.getText().toString())) {
+            password2Text.setError(getResources().getString(R.string.empty_field_prompt));
+            pass2 = false;
         }
-        //passwords are too short
-        if (!UserLoginValidation.passwordLengthValid(password1Text.getText().toString()) ||
-                !UserLoginValidation.passwordLengthValid(password2Text.getText().toString()) ) {
-            password1Text.setError(getResources().getString(R.string.password_too_short_prompt));
-            password2Text.setError(getResources().getString(R.string.password_too_short_prompt));
-            passwordLengthValid = false;
-        }
-        //passwords do not match
-        if (UserLoginValidation.passwordsMatch(password1Text.getText().toString(),
-                password2Text.getText().toString())) {
-            password1Text.setError(getResources().getString(R.string.passwords_do_not_match_prompt));
-            password2Text.setError(getResources().getString(R.string.passwords_do_not_match_prompt));
-            passwordsMatch = false;
-        }
-        //passwords do not match and are too short
-        if (!passwordLengthValid && !passwordsMatch) {
-            password1Text.setError(getResources()
-                    .getString(R.string.pass_not_match_and_short_prompt));
-            password2Text.setError(getResources()
-                    .getString(R.string.pass_not_match_and_short_prompt));
-        }
-        //if all fields valid send message to activity to launch DisplayFragment
-        if (usernameFilled && password1Filled && password2Filled && passwordsMatch
-                && passwordLengthValid) {
-            mListener.onFragmentInteractionRegClickedUserReg(usernameText.getText().toString(),
-                    password1Text.getText().toString());
-        }
+        return username && pass1 && pass2;
     }
 
     @Override
@@ -114,6 +120,6 @@ public class UserRegistrationFragment extends Fragment {
      */
     public interface OnFragmentInteractionListenerUserReg {
 
-        void onFragmentInteractionRegClickedUserReg(String username, String password);
+        void onFragmentInteractionRegClickedFromUserReg(String username, String password);
     }
 }

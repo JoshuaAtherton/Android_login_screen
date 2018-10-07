@@ -73,7 +73,7 @@ public class UserLoginFragment extends Fragment {
 
     // call RegisterLoginActivity to launch UserRegistrationFragment
     public void registerClicked(View view) {
-        mListener.onFragmentInteractionRegisterClickedUserLogin();
+        mListener.onFragmentInteractionRegisterClickedFromUserLogin();
     }
 
     @Override
@@ -95,16 +95,10 @@ public class UserLoginFragment extends Fragment {
 
     /**
      * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * fragment to allow an interaction in this fragment.
      */
     public interface OnFragmentUserLoginInteractionListener {
         void onFragmentInteractionLoginClickedUserLogin(String username, String password);
-        void onFragmentInteractionRegisterClickedUserLogin();
+        void onFragmentInteractionRegisterClickedFromUserLogin();
     }
 }

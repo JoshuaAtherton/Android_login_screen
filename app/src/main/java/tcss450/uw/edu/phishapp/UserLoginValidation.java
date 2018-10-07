@@ -6,14 +6,6 @@ public class UserLoginValidation {
         return text.length() <= 0;
     }
 
-    public static boolean passwordsMatch(String pass1, String pass2) {
-        return pass1.equals(pass2);
-    }
-
-    public static boolean passwordLengthValid(String text) {
-        return text.length() >= 6;
-    }
-
     public static boolean passwordHasAtSymbol(String text) {
         boolean found = false;
         for(int i = 0; i < text.length(); i++) {

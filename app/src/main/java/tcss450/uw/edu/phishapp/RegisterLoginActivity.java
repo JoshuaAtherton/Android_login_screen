@@ -1,5 +1,6 @@
 package tcss450.uw.edu.phishapp;
 
+import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -39,11 +40,7 @@ public class RegisterLoginActivity extends AppCompatActivity
         }
     }
 
-
-    @Override
-    public void onFragmentInteractionLoginClickedUserLogin(String username, String password) {
-        Log.d("RegisterLoginActivity", "login button clicked");
-
+    private void createDisplayFragment(String username, String password) {
         DisplayFragment displayFragment = new DisplayFragment();
         Bundle args = new Bundle();
         String[] userInfo = new String[2];
@@ -54,16 +51,24 @@ public class RegisterLoginActivity extends AppCompatActivity
         displayFragment.setArguments(args);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
+        /*
         transaction.replace(R.id.register_login_container, displayFragment);
-//        transaction.addToBackStack(null); // on back exit the app so not needed
-
+        // transaction.addToBackStack(null); // on back exit the app so omit call
         transaction.commit();
-
+        */
+        // above three lines are the same as line below:
+        transaction.replace(R.id.register_login_container, displayFragment).commit();
     }
 
     @Override
-    public void onFragmentInteractionRegisterClickedUserLogin() {
+    public void onFragmentInteractionLoginClickedUserLogin(String username, String password) {
+        Log.d("RegisterLoginActivity", "login button clicked");
+
+        createDisplayFragment(username, password);
+    }
+
+    @Override
+    public void onFragmentInteractionRegisterClickedFromUserLogin() {
         Log.d("RegisterLoginActivity",
                 "register button clicked to launch register fragment");
 
@@ -73,15 +78,19 @@ public class RegisterLoginActivity extends AppCompatActivity
         transaction.replace(R.id.register_login_container, userRegFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 
     @Override
-    public void onFragmentInteractionRegClickedUserReg(String username, String password) {
+    public void onFragmentInteractionRegClickedFromUserReg(String username, String password) {
         Log.d("RegisterLoginActivity",
                 "user clicked registration button from registration screen");
-
-
+        //clear the back stack of fragments
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
+            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+        createDisplayFragment(username, password);
     }
+
 }
 
