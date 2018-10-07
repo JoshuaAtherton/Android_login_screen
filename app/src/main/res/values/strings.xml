@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">ChallengeApp</string>
+
+    <!-- static text on screen -->
+    <string name="welcome_message">Welcome!</string>
+    <string name="login_message">Please log in or register</string>
+    <string name="register_message">Please register for an account</string>
+    <string name="login_success">Login Successful!</string>
+
+    <!-- text fields -->
+    <string name="username_prompt">Username</string>
+    <string name="password_prompt">Password</string>
+
+    <!-- buttons -->
+    <string name="login_text">LOGIN</string>
+    <string name="register_text">REGISTER</string>
+
+</resources>
