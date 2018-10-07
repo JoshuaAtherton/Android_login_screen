@@ -44,7 +44,7 @@ public class UserRegistrationFragment extends Fragment {
         return v;
     }
 
-    public void registerButtonClicked(View view) {
+    public void registerButtonClicked(View view) { //todo: refactor and fix
         boolean usernameFilled = true, password1Filled = true, password2Filled = true;
         boolean passwordsMatch = true, passwordLengthValid = true;
         //are no fields blank
