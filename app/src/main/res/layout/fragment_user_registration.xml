@@ -33,9 +33,8 @@
         android:hint="@string/password_prompt"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_username" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_username_reg" />
 
     <EditText
         android:id="@+id/editText_password2_reg"
@@ -48,12 +47,12 @@
         android:hint="@string/password_prompt"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_password1_reg" />
 
     <EditText
-        android:id="@+id/editText_username"
+        android:id="@+id/editText_username_reg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
