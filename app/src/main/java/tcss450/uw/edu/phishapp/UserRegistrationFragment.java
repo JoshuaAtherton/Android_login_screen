@@ -2,6 +2,7 @@ package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,27 +20,29 @@ import android.widget.EditText;
  */
 public class UserRegistrationFragment extends Fragment {
 
+    private static final int PASSWORD_LENGTH = 6;
     private OnFragmentInteractionListenerUserReg mListener;
     private EditText usernameText;
     private EditText password1Text;
     private EditText password2Text;
+    private View v;
 
     public UserRegistrationFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_user_registration, container, false);
+        v = inflater.inflate(R.layout.fragment_user_registration, container, false);
 
         usernameText = v.findViewById(R.id.editText_username_reg);
         password1Text = v.findViewById(R.id.editText_password1_reg);
         password2Text = v.findViewById(R.id.editText_password2_reg);
 
         // Add a listener for the register button
-        Button b = (Button) v.findViewById(R.id.button_register_reg);
+        Button b = v.findViewById(R.id.button_register_reg);
         b.setOnClickListener(this::registerButtonClicked);
         Log.d("UserRegistrationFragment", "creating view");
         return v;
@@ -47,52 +50,52 @@ public class UserRegistrationFragment extends Fragment {
 
     //for testing button
     public void registerButtonClicked(View view) {
-        Log.d("UserRegistrationFragment", "Register button Clicked");
+        Log.d("UserRegistrationFragment", "in Register button Clicked");
+        boolean atSymbol,
+                noBlankFields,
+                passMatching,
+                passLength = false;
 
-        boolean noBlankFields = checkForBlankFields();
-        boolean passMatching, passlength = false;
+        atSymbol = UserLoginValidation.hasAtSymbol(usernameText, v);
+        noBlankFields = checkForBlankFields();
+        passMatching =
+                password1Text.getText().toString().equals(password2Text.getText().toString());
 
-        //validate passwords
-        if (password1Text.getText().toString().equals(password2Text.getText().toString())) {
-            passMatching = true;
-            if (password1Text.getText().toString().length() >= 6) {
-                passlength = true;
-            } else {
-                password1Text.setError(getResources()
-                        .getString(R.string.password_too_short_prompt));
-                password2Text.setError(getResources()
-                        .getString(R.string.password_too_short_prompt));
-                passlength = false;
+        if (passMatching) {
+            passLength = password1Text.getText().toString().length() >= PASSWORD_LENGTH;
+            if (!passLength) {
+                password1Text.setError(getResources().getString(R.string.password_too_short_prompt));
+                password2Text.setError(getResources().getString(R.string.password_too_short_prompt));
             }
         } else {
-            password1Text.setError(getResources()
-                    .getString(R.string.passwords_do_not_match_prompt));
-            password2Text.setError(getResources()
-                    .getString(R.string.passwords_do_not_match_prompt));
-            passMatching = false;
+            password1Text.setError(getResources().getString(R.string.passwords_do_not_match_prompt));
+            password2Text.setError(getResources().getString(R.string.passwords_do_not_match_prompt));
         }
+
         // if all fields are valid send message through interface
-        if (noBlankFields && passMatching && passlength) {
+        if (noBlankFields && atSymbol && passMatching && passLength) {
+            Log.d("UserRegistrationFragment", "Register button Clicked sending interface" +
+                    "prompt");
             mListener.onFragmentInteractionRegClickedFromUserReg(
                     usernameText.getText().toString(), password1Text.getText().toString());
         }
     }
 
+    /**
+     * Check if TextView fields are blank.
+     * @return true if no fields blank
+     */
     private boolean checkForBlankFields() {
-        boolean username = true, pass1 = true, pass2 = true;
-        if (UserLoginValidation.isFieldBlank(usernameText.getText().toString())) {
-            usernameText.setError(getResources().getString(R.string.empty_field_prompt));
-            username = false;
-        }
-        if (UserLoginValidation.isFieldBlank(password1Text.getText().toString())) {
-            password1Text.setError(getResources().getString(R.string.empty_field_prompt));
-            pass1 = false;
-        }
-        if (UserLoginValidation.isFieldBlank(password2Text.getText().toString())) {
-            password2Text.setError(getResources().getString(R.string.empty_field_prompt));
-            pass2 = false;
-        }
-        return username && pass1 && pass2;
+
+        boolean username,
+                pass1,
+                pass2;
+
+        username = UserLoginValidation.isFieldBlank(usernameText, v);
+        pass1 = UserLoginValidation.isFieldBlank(usernameText, v);
+        pass2 = UserLoginValidation.isFieldBlank(usernameText, v);
+
+        return !(username && pass1 && pass2);
     }
 
     @Override

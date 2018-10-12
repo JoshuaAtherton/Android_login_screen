@@ -3,6 +3,7 @@ package tcss450.uw.edu.phishapp;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 /**
@@ -23,16 +25,17 @@ public class UserLoginFragment extends Fragment {
     private OnFragmentUserLoginInteractionListener mListener;
     private EditText username;
     private EditText password;
+    private View v;
 
     public UserLoginFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_user_login, container, false);
+        v = inflater.inflate(R.layout.fragment_user_login, container, false);
         Log.d("UserLoginFragment", "inflating the fragment");
 
         // set up username & password text fields
@@ -40,10 +43,10 @@ public class UserLoginFragment extends Fragment {
         password = v.findViewById(R.id.editText_password);
 
         //set up login and register buttons
-        Button b = (Button) v.findViewById(R.id.button_login);
+        Button b = v.findViewById(R.id.button_login);
         b.setOnClickListener(this::loginClicked);
 
-        b = (Button) v.findViewById(R.id.button_register);
+        b = v.findViewById(R.id.button_register);
         b.setOnClickListener(this::registerClicked);
 
         return v;
@@ -51,21 +54,16 @@ public class UserLoginFragment extends Fragment {
 
     // if all rules passed call RegisterLoginActivity to launch display fragment
     public void loginClicked(View view) {
-        boolean userNamePass = true, passwordPass = true, atSymbolPass = true;
-        if (UserLoginValidation.isFieldBlank(username.getText().toString())) {
-            username.setError(getResources().getString(R.string.empty_field_prompt));
-            userNamePass = false;
-        }
-        if (UserLoginValidation.isFieldBlank(password.getText().toString())) {
-            password.setError(getResources().getString(R.string.empty_field_prompt));
-            passwordPass = false;
-        }
-        if (!UserLoginValidation.passwordHasAtSymbol(password.getText().toString())) {
-            password.setError("password needs to have at least one @ character");
-            atSymbolPass = false;
-        }
+        boolean userNameBlank,
+                passwordBlank,
+                hasAtSymbol ;
 
-        if (userNamePass && passwordPass && atSymbolPass) {
+        hasAtSymbol = UserLoginValidation.hasAtSymbol(username, v);
+        userNameBlank = UserLoginValidation.isFieldBlank(username, v);
+        passwordBlank = UserLoginValidation.isFieldBlank(password, v);
+
+        // notify listeners
+        if (!userNameBlank && !passwordBlank && hasAtSymbol) {
             mListener.onFragmentInteractionLoginClickedUserLogin(username.getText().toString(),
                     password.getText().toString());
         }

@@ -12,8 +12,10 @@
     <string name="password_prompt">Password</string>
 
     <string name="empty_field_prompt">Field cannot be left blank</string>
+    <string name="missing_at_symbol_prompt">Must have at least one @ character</string>
     <string name="password_too_short_prompt">Password needs to be at least 6 characters</string>
     <string name="passwords_do_not_match_prompt">Passwords do not match</string>
+
 
     <!-- buttons -->
     <string name="login_text">LOGIN</string>
