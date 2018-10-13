@@ -1,6 +1,7 @@
 package tcss450.uw.edu.phishapp;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -69,6 +70,11 @@ public class RegisterLoginActivity extends AppCompatActivity
         Log.d("RegisterLoginActivity", "login button clicked");
 
         createDisplayFragment(username, password);
+
+//        Intent intent = new Intent(this, HomeActivity.class);
+////        intent.putExtra(EXTRA_MESSAGE, message);
+//        startActivity(intent);
+
     }
 
     @Override

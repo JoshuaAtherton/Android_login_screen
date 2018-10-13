@@ -16,10 +16,10 @@ class UserLoginValidation {
     }
 
     static boolean hasAtSymbol(TextView field, View view) {
-        boolean hasAtSymbol = true;
+        boolean hasAtSymbol = false;
         if (!UserLoginValidation.searchForChar(field.getText().toString())) {
             field.setError(view.getResources().getString(R.string.missing_at_symbol_prompt));
-            hasAtSymbol = false;
+            hasAtSymbol = true;
         }
         return hasAtSymbol;
     }

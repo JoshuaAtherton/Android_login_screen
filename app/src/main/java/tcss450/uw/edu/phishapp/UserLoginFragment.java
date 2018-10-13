@@ -57,7 +57,7 @@ public class UserLoginFragment extends Fragment {
                 passwordBlank,
                 hasAtSymbol ;
 
-        hasAtSymbol = UserLoginValidation.hasAtSymbol(username, v);
+        hasAtSymbol = !UserLoginValidation.hasAtSymbol(username, v);
         userNameBlank = UserLoginValidation.isFieldBlank(username, v);
         passwordBlank = UserLoginValidation.isFieldBlank(password, v);
 

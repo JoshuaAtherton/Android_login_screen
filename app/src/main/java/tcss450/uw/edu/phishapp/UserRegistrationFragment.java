@@ -56,7 +56,7 @@ public class UserRegistrationFragment extends Fragment {
                 passMatching,
                 passLength = false;
 
-        atSymbol = UserLoginValidation.hasAtSymbol(usernameText, v);
+        atSymbol = !UserLoginValidation.hasAtSymbol(usernameText, v);
         noBlankFields = checkForBlankFields();
         passMatching =
                 password1Text.getText().toString().equals(password2Text.getText().toString());
