@@ -45,36 +45,34 @@ public class RegisterLoginActivity extends AppCompatActivity
         }
     }
 
-    private void createDisplayFragment(String username, String password) {
-        DisplayFragment displayFragment = new DisplayFragment();
+    /**
+     * Create a new bundle string array with the arguments, then create a new intent
+     * to start the HomeActivity.
+     * @param username
+     * @param password
+     */
+    private void launchHomeActivity(String username, String password) {
         Bundle args = new Bundle();
         String[] userInfo = new String[2];
         userInfo[0] = username;
         userInfo[1] = password;
-
         args.putStringArray(getResources().getString(R.string.user_info_key), userInfo);
-        displayFragment.setArguments(args);
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        /*
-        transaction.replace(R.id.register_login_container, displayFragment);
-        // transaction.addToBackStack(null); // on back exit the app so omit call
-        transaction.commit();
-        */
-        // above three lines are the same as line below:
-        transaction.replace(R.id.register_login_container, displayFragment).commit();
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtras(args); //set a bundle to be sent with intent
+        startActivity(intent);
     }
 
+    /**
+     *  Launch HomeActivity from UserLoginFragment. User will then be logged in.
+     * @param username
+     * @param password
+     */
     @Override
     public void onFragmentInteractionLoginClickedUserLogin(String username, String password) {
         Log.d("RegisterLoginActivity", "login button clicked");
 
-        createDisplayFragment(username, password);
-
-//        Intent intent = new Intent(this, HomeActivity.class);
-////        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
-
+        launchHomeActivity(username, password);
     }
 
     @Override
@@ -90,16 +88,23 @@ public class RegisterLoginActivity extends AppCompatActivity
         transaction.commit();
     }
 
+    /**
+     * Launch HomeActivity from UserRegistrationFragment. User will then be logged in.
+     * @param username
+     * @param password
+     */
     @Override
     public void onFragmentInteractionRegClickedFromUserReg(String username, String password) {
         Log.d("RegisterLoginActivity",
                 "user clicked registration button from registration screen");
+
         //clear the back stack of fragments
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if (count > 0) {
             getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
-        createDisplayFragment(username, password);
+
+        launchHomeActivity(username, password);
     }
 
 }
