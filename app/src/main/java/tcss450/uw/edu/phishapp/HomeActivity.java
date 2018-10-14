@@ -14,8 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import tcss450.uw.edu.phishapp.blog.DummyContent;
+
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        BlogFragment.OnListBlogFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +90,23 @@ public class HomeActivity extends AppCompatActivity
             //todo: might need to add to back stack ?
         } else if (id == R.id.nav_blog_posts) {
             // will navigate to RecyclerViewFragment to open it...
-
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.homeActivity_fragmentContainer,
+                    new BlogFragment())
+                    .addToBackStack(null).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     *  Method call from BlogFragment.
+     * @param item
+     */
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+
     }
 }

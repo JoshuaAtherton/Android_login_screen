@@ -4,6 +4,12 @@
     <color name="colorPrimaryDark">#009688</color>
     <color name="colorAccent">#448AFF</color>
     <color name="blackText">#000000</color>
-
     <color name="whiteText">#ffffff</color>
+
+    <color name="cardview_title_text">#ffffff</color>
+    <color name="cardview_item_text">#f7e7e7</color>
+
+    <color name="cardview_background_color">#4f707b</color>
+
+
 </resources>
