@@ -86,7 +86,7 @@ public class HomeActivity extends AppCompatActivity
                     .commit();
             //todo: might need to add to back stack ?
         } else if (id == R.id.nav_blog_posts) {
-            // will navigate to RecyclerViewFragment
+            // will navigate to RecyclerViewFragment to open it...
 
         }
 
