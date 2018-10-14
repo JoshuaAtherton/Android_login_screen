@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChallengeApp</string>
+    <string name="app_name">Phish</string>
 
     <!-- static text on screen -->
     <string name="welcome_message">Welcome!</string>
@@ -16,6 +16,9 @@
     <string name="password_too_short_prompt">Password needs to be at least 6 characters</string>
     <string name="passwords_do_not_match_prompt">Passwords do not match</string>
 
+    <!-- navigation bar -->
+    <string name="nav_home">Home</string>
+    <string name="nav_blog_posts">Blog Posts</string>
 
     <!-- buttons -->
     <string name="login_text">LOGIN</string>
@@ -26,8 +29,8 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Phish App</string>
+    <string name="nav_header_subtitle">TCSS 450 Labs</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
