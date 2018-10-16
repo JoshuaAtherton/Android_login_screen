@@ -1,5 +1,7 @@
 package tcss450.uw.edu.phishapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -105,11 +107,10 @@ public class HomeActivity extends AppCompatActivity
      * @param item
      */
     @Override
-    public void onListFragmentInteraction(BlogPost item) {
-        //pass the BlogPost object to the new fragment
-//        Bundle bArg = ;
+    public void onListFragmentInteraction(BlogPost blogItem) {
 
         BlogPostFragment blogPostFrag = new BlogPostFragment();
+        blogPostFrag.setBlogPost(blogItem);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         transaction.replace(R.id.homeActivity_fragmentContainer, blogPostFrag)
@@ -118,8 +119,10 @@ public class HomeActivity extends AppCompatActivity
 
 
     @Override
-    public void onFragmentInteractionViewFullPost() {
+    public void onFragmentInteractionViewFullPost(String url) {
         Log.d("HomeActivity", "blogPostFragment view full post button clicked");
         //launch blog post in browser
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 }

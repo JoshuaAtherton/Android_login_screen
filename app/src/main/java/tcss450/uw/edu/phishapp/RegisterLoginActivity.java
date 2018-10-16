@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- * Controls the entry point that controls login and register activity.
- * This activity holds the login/register fragments
+ * Main Entry point that controls the entry point that controls login and register activity.
+ * This activity holds the login/register fragments.
  */
 public class RegisterLoginActivity extends AppCompatActivity
         implements UserLoginFragment.OnFragmentUserLoginInteractionListener,

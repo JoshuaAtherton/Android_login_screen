@@ -41,8 +41,8 @@ public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecycl
         holder.mItem = mValues.get(position);
         holder.mTitle.setText(mValues.get(position).getTitle());
         holder.mPublishDate.setText(mValues.get(position).getPubDate());
-
-        holder.mBlogTeaser.setText(stripHtml(mValues.get(position).getTeaser()));
+        //get the teaser with html removed
+        holder.mBlogTeaser.setText(mValues.get(position).getStripedHtmlTeaser());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,16 +54,6 @@ public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecycl
                 }
             }
         });
-    }
-
-    /**
-     * Take in a string and return a new version of that string with html elements removed.
-     * @param s the string to remove html from
-     * @return a string cleaned of html tags
-     */
-    private String stripHtml(String s) {
-        Spanned span = Html.fromHtml(s, Html.FROM_HTML_MODE_COMPACT);
-        return span.toString();
     }
 
     @Override

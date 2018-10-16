@@ -1,5 +1,8 @@
 package tcss450.uw.edu.phishapp.blog;
 
+import android.text.Html;
+import android.text.Spanned;
+
 import java.io.Serializable;
 
 /**
@@ -101,6 +104,15 @@ public class BlogPost implements Serializable {
 
     public String getTeaser() {
         return mTeaser;
+    }
+
+    /**
+     * Take in a string and return a new version of that string with html elements removed.
+     * @return a string cleaned of html tags
+     */
+    public String getStripedHtmlTeaser() {
+        Spanned span = Html.fromHtml(mTeaser, Html.FROM_HTML_MODE_COMPACT);
+        return span.toString();
     }
 
     public String getAuthor() {
