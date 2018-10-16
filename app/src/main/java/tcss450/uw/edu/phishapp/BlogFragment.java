@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import tcss450.uw.edu.phishapp.blog.DummyContent;
-import tcss450.uw.edu.phishapp.blog.DummyContent.DummyItem;
+import tcss450.uw.edu.phishapp.blog.BlogGenerator;
+import tcss450.uw.edu.phishapp.blog.BlogPost;
 
 /**
  * A fragment representing a list of Items.
@@ -67,7 +67,7 @@ public class BlogFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyBlogRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MyBlogRecyclerViewAdapter(BlogGenerator.BLOGS, mListener));
         }
         return view;
     }
@@ -102,6 +102,6 @@ public class BlogFragment extends Fragment {
      */
     public interface OnListBlogFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(BlogPost item);
     }
 }

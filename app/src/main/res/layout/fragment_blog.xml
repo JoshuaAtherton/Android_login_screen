@@ -19,20 +19,32 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/item_number"
+                android:id="@+id/textView_blogTitle_blogFrag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:text="title"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="@color/cardview_title_text" />
 
             <TextView
-                android:id="@+id/content"
+                android:id="@+id/textView_publishDate_blogFrag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/text_margin"
+                android:text="date"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="@color/cardview_item_text" />
+
+            <TextView
+                android:id="@+id/textView_blogTeaser_blogFrag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="teaser"
+                android:maxLines="4"
+                android:maxLength="120"
+                android:ellipsize="end"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
