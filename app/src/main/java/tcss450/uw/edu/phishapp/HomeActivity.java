@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,7 +16,8 @@ import tcss450.uw.edu.phishapp.blog.BlogPost;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        BlogFragment.OnListBlogFragmentInteractionListener {
+        BlogFragment.OnListBlogFragmentInteractionListener,
+        BlogPostFragment.OnBlogPostFragmentInteractionListener  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,20 @@ public class HomeActivity extends AppCompatActivity
      */
     @Override
     public void onListFragmentInteraction(BlogPost item) {
+        //pass the BlogPost object to the new fragment
+//        Bundle bArg = ;
 
+        BlogPostFragment blogPostFrag = new BlogPostFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.homeActivity_fragmentContainer, blogPostFrag)
+                .addToBackStack(null).commit();
+    }
+
+
+    @Override
+    public void onFragmentInteractionViewFullPost() {
+        Log.d("HomeActivity", "blogPostFragment view full post button clicked");
+        //launch blog post in browser
     }
 }

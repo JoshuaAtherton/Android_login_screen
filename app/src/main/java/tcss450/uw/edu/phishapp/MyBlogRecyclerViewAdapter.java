@@ -1,6 +1,8 @@
 package tcss450.uw.edu.phishapp;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +41,8 @@ public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecycl
         holder.mItem = mValues.get(position);
         holder.mTitle.setText(mValues.get(position).getTitle());
         holder.mPublishDate.setText(mValues.get(position).getPubDate());
-        holder.mBlogTeaser.setText(mValues.get(position).getTeaser());
 
+        holder.mBlogTeaser.setText(stripHtml(mValues.get(position).getTeaser()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +54,16 @@ public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecycl
                 }
             }
         });
+    }
+
+    /**
+     * Take in a string and return a new version of that string with html elements removed.
+     * @param s the string to remove html from
+     * @return a string cleaned of html tags
+     */
+    private String stripHtml(String s) {
+        Spanned span = Html.fromHtml(s, Html.FROM_HTML_MODE_COMPACT);
+        return span.toString();
     }
 
     @Override

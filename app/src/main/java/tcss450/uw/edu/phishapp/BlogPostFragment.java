@@ -7,17 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BlogPostFragment.OnFragmentInteractionListener} interface
+ * {@link BlogPostFragment.OnBlogPostFragmentInteractionListener} interface
  * to handle interaction events.
  */
 public class BlogPostFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    private OnBlogPostFragmentInteractionListener mListener;
 
     public BlogPostFragment() {
         // Required empty public constructor
@@ -28,21 +29,27 @@ public class BlogPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blog_post, container, false);
+        View v = inflater.inflate(R.layout.fragment_blog_post, container, false);
+
+        Button b = (Button) v.findViewById(R.id.button_fullPost_blogPost);
+        b.setOnClickListener(this::viewFullPost);
+
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void viewFullPost(View view) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteractionViewFullPost();
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnBlogPostFragmentInteractionListener) {
+            mListener = (OnBlogPostFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -65,8 +72,8 @@ public class BlogPostFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnBlogPostFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteractionViewFullPost();
     }
 }
