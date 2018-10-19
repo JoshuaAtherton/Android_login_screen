@@ -1,6 +1,7 @@
 package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
+import android.net.Credentials;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -10,23 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link UserLoginFragment.OnFragmentUserLoginInteractionListener} interface
+ * {@link OnLoginFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class UserLoginFragment extends Fragment {
+public class LoginFragment extends Fragment {
 
-    private OnFragmentUserLoginInteractionListener mListener;
+    private OnLoginFragmentInteractionListener mListener;
     private EditText username;
     private EditText password;
     private View v;
 
-    public UserLoginFragment() {
+    public LoginFragment() {
         // Required empty public constructor
     }
 
@@ -34,8 +34,8 @@ public class UserLoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_user_login, container, false);
-        Log.d("UserLoginFragment", "inflating the fragment");
+        v = inflater.inflate(R.layout.fragment_login, container, false);
+        Log.d("LoginFragment", "inflating the fragment");
 
         // set up username & password text fields
         username = v.findViewById(R.id.editText_username);
@@ -51,7 +51,7 @@ public class UserLoginFragment extends Fragment {
         return v;
     }
 
-    // if all rules passed call RegisterLoginActivity to launch display fragment
+    // if all rules passed call MainActivity to launch display fragment
     public void loginClicked(View view) {
         boolean userNameBlank,
                 passwordBlank,
@@ -63,21 +63,20 @@ public class UserLoginFragment extends Fragment {
 
         // notify listeners
         if (!userNameBlank && !passwordBlank && hasAtSymbol) {
-            mListener.onFragmentInteractionLoginClickedUserLogin(username.getText().toString(),
-                    password.getText().toString());
+            mListener.onLoginAttempt(null);
         }
     }
 
-    // call RegisterLoginActivity to launch UserRegistrationFragment
+    // call MainActivity to launch RegistrationFragment
     public void registerClicked(View view) {
-        mListener.onFragmentInteractionRegisterClickedFromUserLogin();
+        mListener.onRegisterClicked();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentUserLoginInteractionListener) {
-            mListener = (OnFragmentUserLoginInteractionListener) context;
+        if (context instanceof OnLoginFragmentInteractionListener) {
+            mListener = (OnLoginFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -94,8 +93,8 @@ public class UserLoginFragment extends Fragment {
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment.
      */
-    public interface OnFragmentUserLoginInteractionListener {
-        void onFragmentInteractionLoginClickedUserLogin(String username, String password);
-        void onFragmentInteractionRegisterClickedFromUserLogin();
+    public interface OnLoginFragmentInteractionListener {
+        void onLoginAttempt(Credentials credentials);
+        void onRegisterClicked();
     }
 }

@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             if (findViewById(R.id.homeActivity_fragmentContainer) != null) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.homeActivity_fragmentContainer, new DisplayFragment()).commit();
+                        .add(R.id.homeActivity_fragmentContainer, new SuccessFragment()).commit();
             }
         }
     }
@@ -89,12 +89,12 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.homeActivity_fragmentContainer, new DisplayFragment());
+            transaction.replace(R.id.homeActivity_fragmentContainer, new SuccessFragment());
             // don't add to the back stack if already on display fragment
             // prevent multiple home button clicks adding to back stack
             FragmentManager fragmentManager = getSupportFragmentManager();
             Fragment currentFragment = fragmentManager.findFragmentById(R.id.homeActivity_fragmentContainer);
-            if(!(currentFragment instanceof DisplayFragment)) {
+            if(!(currentFragment instanceof SuccessFragment)) {
                   transaction.addToBackStack(null);
             }
             transaction.commit();

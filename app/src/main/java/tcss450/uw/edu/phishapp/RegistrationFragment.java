@@ -1,6 +1,7 @@
 package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
+import android.net.Credentials;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -15,19 +16,19 @@ import android.widget.EditText;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link UserRegistrationFragment.OnFragmentInteractionListenerUserReg} interface
+ * {@link OnRegisterFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class UserRegistrationFragment extends Fragment {
+public class RegistrationFragment extends Fragment {
 
     private static final int PASSWORD_LENGTH = 6;
-    private OnFragmentInteractionListenerUserReg mListener;
+    private OnRegisterFragmentInteractionListener mListener;
     private EditText usernameText;
     private EditText password1Text;
     private EditText password2Text;
     private View v;
 
-    public UserRegistrationFragment() {
+    public RegistrationFragment() {
         // Required empty public constructor
     }
 
@@ -35,7 +36,7 @@ public class UserRegistrationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_user_registration, container, false);
+        v = inflater.inflate(R.layout.fragment_registration, container, false);
 
         usernameText = v.findViewById(R.id.editText_username_reg);
         password1Text = v.findViewById(R.id.editText_password1_reg);
@@ -44,13 +45,13 @@ public class UserRegistrationFragment extends Fragment {
         // Add a listener for the register button
         Button b = v.findViewById(R.id.button_register_reg);
         b.setOnClickListener(this::registerButtonClicked);
-        Log.d("UserRegistrationFragment", "creating view");
+        Log.d("RegistrationFragment", "creating view");
         return v;
     }
 
     //for testing button
     public void registerButtonClicked(View view) {
-        Log.d("UserRegistrationFragment", "in Register button Clicked");
+        Log.d("RegistrationFragment", "in Register button Clicked");
         boolean atSymbol,
                 noBlankFields,
                 passMatching,
@@ -74,10 +75,9 @@ public class UserRegistrationFragment extends Fragment {
 
         // if all fields are valid send message through interface
         if (noBlankFields && atSymbol && passMatching && passLength) {
-            Log.d("UserRegistrationFragment", "Register button Clicked sending interface" +
+            Log.d("RegistrationFragment", "Register button Clicked sending interface" +
                     "prompt");
-            mListener.onFragmentInteractionRegClickedFromUserReg(
-                    usernameText.getText().toString(), password1Text.getText().toString());
+            mListener.onRegisterAttempt(null);
         }
     }
 
@@ -101,8 +101,8 @@ public class UserRegistrationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListenerUserReg) {
-            mListener = (OnFragmentInteractionListenerUserReg) context;
+        if (context instanceof OnRegisterFragmentInteractionListener) {
+            mListener = (OnRegisterFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -121,8 +121,8 @@ public class UserRegistrationFragment extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnFragmentInteractionListenerUserReg {
+    public interface OnRegisterFragmentInteractionListener {
 
-        void onFragmentInteractionRegClickedFromUserReg(String username, String password);
+        void onRegisterAttempt(Credentials credentials);
     }
 }

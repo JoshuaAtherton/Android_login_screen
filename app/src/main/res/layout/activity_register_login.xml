@@ -4,6 +4,6 @@
     android:id="@+id/register_login_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterLoginActivity">
+    tools:context=".MainActivity">
 
 </FrameLayout>
