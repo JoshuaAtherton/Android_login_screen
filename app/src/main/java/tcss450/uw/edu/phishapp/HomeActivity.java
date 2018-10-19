@@ -194,6 +194,8 @@ public class HomeActivity extends AppCompatActivity
                     .onPreExecute(this::onWaitFragmentInteractionShow)
                     .onPostExecute(this::handleBlogGetOnPostExecute)
                     .build().execute();
+        } else if (id == R.id.nav_set_lists){
+            // load set Lists
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -19,6 +19,7 @@
     <!-- navigation bar -->
     <string name="nav_home">Home</string>
     <string name="nav_blog_posts">Blog Posts</string>
+    <string name="nav_set_lists">Set Lists</string>
 
     <!-- buttons -->
     <string name="login_text">LOGIN</string>

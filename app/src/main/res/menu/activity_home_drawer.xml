@@ -12,6 +12,10 @@
             android:id="@+id/nav_blog_posts"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/nav_blog_posts" />
+        <item
+            android:id="@+id/nav_set_lists"
+            android:icon="@drawable/ic_menu_set_lists"
+            android:title="@string/nav_set_lists" />
     </group>
 
 </menu>
