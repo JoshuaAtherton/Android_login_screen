@@ -1,7 +1,7 @@
 package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
-import android.net.Credentials;
+import tcss450.uw.edu.phishapp.model.Credentials;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import tcss450.uw.edu.phishapp.model.UserLoginValidation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -83,6 +84,7 @@ public class RegistrationFragment extends Fragment {
 
     /**
      * Check if TextView fields are blank.
+     *
      * @return true if no fields blank
      */
     private boolean checkForBlankFields() {

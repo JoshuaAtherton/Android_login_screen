@@ -1,7 +1,6 @@
 package tcss450.uw.edu.phishapp;
 
-import android.app.FragmentManager;
-import android.net.Credentials;
+import tcss450.uw.edu.phishapp.model.Credentials;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_login);
+        setContentView(R.layout.activity_main);
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
