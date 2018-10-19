@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import tcss450.uw.edu.phishapp.R;
 
-
 /**
  * Provides methods for client side user name and password validation.
  */
@@ -38,6 +37,8 @@ public class UserLoginValidation {
             }
         }
         return found;
+//        or simply
+//        return text.chars().filter(ch -> ch == '@').count() != 1;
     }
 
 }

@@ -1,6 +1,8 @@
 package tcss450.uw.edu.phishapp;
 
 import tcss450.uw.edu.phishapp.model.Credentials;
+
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -45,23 +47,46 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     * try to launch the success fragment
+     * If login or registration successful launch HomeActivity.
      */
     private void launchHomeActivity() {
+//        Bundle args = new Bundle();
+//        String[] userInfo = new String[2];
+//        userInfo[0] = username;
+//        userInfo[1] = password;
+//        args.putStringArray(getResources().getString(R.string.user_info_key), userInfo);
 
+        Intent intent = new Intent(this, HomeActivity.class);
+//        intent.putExtras(args); //set a bundle to be sent with intent
+        startActivity(intent);
     }
 
     /**
-     *  Launch HomeActivity from LoginFragment. User will then be logged in.
-
+     * Launch HomeActivity from LoginFragment. User will then be logged in.
      */
     @Override
     public void onLoginAttempt(Credentials credentials) {
         Log.d("MainActivity", "login button clicked");
 
         launchHomeActivity();
+        //todo: do something with the credentials? pass to next activity?
     }
 
+    /**
+     * Launch HomeActivity from RegistrationFragment. User will then be logged in.
+     */
+    @Override
+    public void onRegisterAttempt(Credentials credentials) {
+        Log.d("MainActivity",
+                "user clicked registration button from registration screen");
+
+        launchHomeActivity();
+        //todo: do something with the credentials? pass to next activity?
+    }
+
+    /**
+     * Launch the RegistrationFragment.
+     */
     @Override
     public void onRegisterClicked() {
         Log.d("MainActivity",
@@ -75,23 +100,21 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    /**
-     * Launch HomeActivity from RegistrationFragment. User will then be logged in.
-
-     */
     @Override
-    public void onRegisterAttempt(Credentials credentials) {
-        Log.d("MainActivity",
-                "user clicked registration button from registration screen");
-
-        //clear the back stack of fragments
-//        int count = getSupportFragmentManager().getBackStackEntryCount();
-//        if (count > 0) {
-//            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//        }
-
-        launchHomeActivity();
+    public void onWaitFragmentInteractionShow() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.register_login_container, new WaitFragment(), "WAIT")
+                .addToBackStack(null)
+                .commit();
     }
 
+    @Override
+    public void onWaitFragmentInteractionHide() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(getSupportFragmentManager().findFragmentByTag("WAIT"))
+                .commit();
+    }
 }
 
