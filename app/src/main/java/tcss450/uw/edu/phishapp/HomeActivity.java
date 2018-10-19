@@ -16,7 +16,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import tcss450.uw.edu.phishapp.blog.BlogPost;
+import tcss450.uw.edu.phishapp.utils.GetAsyncTask;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -81,6 +89,74 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Get the blog posts from the web blog.
+     * @param result
+     */
+    private void handleBlogGetOnPostExecute(final String result) {
+        //parse JSON
+
+        try {
+            JSONObject root = new JSONObject(result);
+            if (root.has("response")) {
+                JSONObject response = root.getJSONObject("response");
+                if (response.has("data")) {
+                    JSONArray data = response.getJSONArray("data");
+
+                    List<BlogPost> blogs = new ArrayList<>();
+
+                    for(int i = 0; i < data.length(); i++) {
+                        JSONObject jsonBlog = data.getJSONObject(i);
+                        blogs.add(new BlogPost.Builder(jsonBlog.getString("pubdate"),
+                                jsonBlog.getString("title"))
+                                .addTeaser(jsonBlog.getString("teaser"))
+                                .addUrl(jsonBlog.getString("url"))
+                                .build());
+                    }
+
+                    BlogPost[] blogsAsArray = new BlogPost[blogs.size()];
+                    blogsAsArray = blogs.toArray(blogsAsArray);
+
+
+                    Bundle args = new Bundle();
+                    args.putSerializable(BlogFragment.ARG_BLOG_LIST, blogsAsArray);
+                    Fragment frag = new BlogFragment();
+                    frag.setArguments(args);
+
+                    onWaitFragmentInteractionHide();
+                    loadFragment(frag);
+                } else {
+                    Log.e("ERROR!", "No data array");
+                    //notify user
+                    onWaitFragmentInteractionHide();
+                }
+            } else {
+                Log.e("ERROR!", "No response");
+                //notify user
+                onWaitFragmentInteractionHide();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("ERROR!", e.getMessage());
+            //notify user
+            onWaitFragmentInteractionHide();
+        }
+    }
+    /**
+     * Load the fragment into the homeActivity frame.
+     * @param frag
+     */
+    private void loadFragment(Fragment frag) {
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.homeActivity_fragmentContainer, frag)
+                .addToBackStack(null);
+        // Commit the transaction
+        transaction.commit();
+    }
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -101,10 +177,23 @@ public class HomeActivity extends AppCompatActivity
             transaction.commit();
 
         } else if (id == R.id.nav_blog_posts) {
+            //old code commented out
             // will navigate to RecyclerViewFragment to open it...
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.homeActivity_fragmentContainer,
-                    new BlogFragment()).addToBackStack(null).commit();
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.homeActivity_fragmentContainer,
+//                    new BlogFragment()).addToBackStack(null).commit();
+            Uri uri = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_phish))
+                    .appendPath(getString(R.string.ep_blog))
+                    .appendPath(getString(R.string.ep_get))
+                    .build();
+
+            new GetAsyncTask.Builder(uri.toString())
+                    .onPreExecute(this::onWaitFragmentInteractionShow)
+                    .onPostExecute(this::handleBlogGetOnPostExecute)
+                    .build().execute();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -132,7 +221,7 @@ public class HomeActivity extends AppCompatActivity
      * @param url String representation of the url to go to.
      */
     @Override
-    public void onFragmentInteractionViewFullPost(String url) {
+    public void onViewFullPostFragmentInteraction(String url) {
         Log.d("HomeActivity", "blogPostFragment view full post button clicked");
         //launch blog post in browser
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -144,7 +233,7 @@ public class HomeActivity extends AppCompatActivity
     public void onWaitFragmentInteractionShow() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.register_login_container, new WaitFragment(), "WAIT")
+                .add(R.id.homeActivity_fragmentContainer, new WaitFragment(), "WAIT")
                 .addToBackStack(null)
                 .commit();
     }

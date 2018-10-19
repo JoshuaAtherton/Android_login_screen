@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import tcss450.uw.edu.phishapp.blog.BlogGenerator;
 import tcss450.uw.edu.phishapp.blog.BlogPost;
 
@@ -21,9 +25,11 @@ import tcss450.uw.edu.phishapp.blog.BlogPost;
  */
 public class BlogFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+    public static final String ARG_BLOG_LIST = "blog lists";
+    private List<BlogPost> mBlogs;
+
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     private OnListBlogFragmentInteractionListener mListener;
 
@@ -34,7 +40,7 @@ public class BlogFragment extends Fragment {
     public BlogFragment() {
     }
 
-    // TODO: Customize parameter initialization
+    // TODO: Customize parameter initialization ?not needed?
     @SuppressWarnings("unused")
     public static BlogFragment newInstance(int columnCount) {
         BlogFragment fragment = new BlogFragment();
@@ -49,8 +55,12 @@ public class BlogFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mBlogs = new ArrayList<BlogPost>(
+                    Arrays.asList((BlogPost[]) getArguments().getSerializable(ARG_BLOG_LIST)));
+        } else {
+            mBlogs = Arrays.asList(BlogGenerator.BLOGS);
         }
+
     }
 
     @Override
@@ -67,7 +77,8 @@ public class BlogFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyBlogRecyclerViewAdapter(BlogGenerator.BLOGS, mListener));
+            recyclerView.setAdapter(new MyBlogRecyclerViewAdapter(
+                    mBlogs.toArray(new BlogPost[mBlogs.size()]), mListener));
         }
         return view;
     }

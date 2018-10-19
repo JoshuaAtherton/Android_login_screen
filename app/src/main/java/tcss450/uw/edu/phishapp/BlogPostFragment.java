@@ -1,9 +1,7 @@
 package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.TestLooperManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +67,7 @@ public class BlogPostFragment extends Fragment {
      */
     public void viewFullPost(View view) {
         if (mListener != null) {
-            mListener.onFragmentInteractionViewFullPost(mBlogPost.getUrl());
+            mListener.onViewFullPostFragmentInteraction(mBlogPost.getUrl());
         }
     }
 
@@ -103,6 +101,6 @@ public class BlogPostFragment extends Fragment {
      */
     public interface OnBlogPostFragmentInteractionListener {
 
-        void onFragmentInteractionViewFullPost(String url);
+        void onViewFullPostFragmentInteraction(String url);
     }
 }
