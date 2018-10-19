@@ -24,6 +24,7 @@
     <string name="login_text">LOGIN</string>
     <string name="register_text">REGISTER</string>
     <string name="full_post_button_text">Full Post</string>
+    <string name="success_logout_button">Logout</string>
 
     <!-- Keys -->
     <string name="user_info_key">user information</string>
