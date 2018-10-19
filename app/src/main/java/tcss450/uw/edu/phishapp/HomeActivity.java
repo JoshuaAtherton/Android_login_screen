@@ -3,6 +3,8 @@ package tcss450.uw.edu.phishapp;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -85,16 +87,23 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.homeActivity_fragmentContainer, new DisplayFragment())
-                    .commit();
-            //todo: might need to add to back stack ?
+            transaction.replace(R.id.homeActivity_fragmentContainer, new DisplayFragment());
+            // don't add to the back stack if already on display fragment
+            // prevent multiple home button clicks adding to back stack
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment currentFragment = fragmentManager.findFragmentById(R.id.homeActivity_fragmentContainer);
+            if(!(currentFragment instanceof DisplayFragment)) {
+                  transaction.addToBackStack(null);
+            }
+            transaction.commit();
+
         } else if (id == R.id.nav_blog_posts) {
             // will navigate to RecyclerViewFragment to open it...
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.homeActivity_fragmentContainer,
-                    new BlogFragment())
-                    .addToBackStack(null).commit();
+                    new BlogFragment()).addToBackStack(null).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -104,7 +113,7 @@ public class HomeActivity extends AppCompatActivity
 
     /**
      *  Method call from BlogFragment.
-     * @param item
+     * @param blogItem A BlogPost item
      */
     @Override
     public void onListFragmentInteraction(BlogPost blogItem) {
@@ -117,7 +126,10 @@ public class HomeActivity extends AppCompatActivity
                 .addToBackStack(null).commit();
     }
 
-
+    /**
+     *  From BlogPostFragment open a website from the chosen url.
+     * @param url String representation of the url to go to.
+     */
     @Override
     public void onFragmentInteractionViewFullPost(String url) {
         Log.d("HomeActivity", "blogPostFragment view full post button clicked");
