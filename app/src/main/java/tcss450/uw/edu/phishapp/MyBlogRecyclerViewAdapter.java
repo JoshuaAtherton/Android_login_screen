@@ -1,18 +1,16 @@
 package tcss450.uw.edu.phishapp;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import tcss450.uw.edu.phishapp.BlogFragment.OnListBlogFragmentInteractionListener;
-import tcss450.uw.edu.phishapp.blog.BlogPost;
-
 import java.util.Arrays;
 import java.util.List;
+
+import tcss450.uw.edu.phishapp.BlogFragment.OnListBlogFragmentInteractionListener;
+import tcss450.uw.edu.phishapp.blog.BlogPost;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link BlogPost} and makes a call to the

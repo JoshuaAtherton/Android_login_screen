@@ -1,9 +1,6 @@
 package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
-
-import tcss450.uw.edu.phishapp.model.Credentials;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +16,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tcss450.uw.edu.phishapp.model.Credentials;
 import tcss450.uw.edu.phishapp.model.UserLoginValidation;
 import tcss450.uw.edu.phishapp.utils.SendPostAsyncTask;
 
@@ -84,23 +82,23 @@ public class LoginFragment extends Fragment {
                     password.toString()).build();
 
             //build the web service URL
-             Uri uri = new Uri.Builder().scheme("https")
-                     .appendPath(getString(R.string.ep_base_url))
-                     .appendPath(getString(R.string.ep_login))
-                     .build();
+            Uri uri = new Uri.Builder().scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_login))
+                    .build();
 
-             //build the JSONObject
-             JSONObject msg = credentials.asJSONObject();
-             mCredentials = credentials;
+            //build the JSONObject
+            JSONObject msg = credentials.asJSONObject();
+            mCredentials = credentials;
 
             // instantiate and execute the AsyncTask.
             // Feel free to add a handler for onPreExecution so that a progress bar
             // is displayed or maybe disable buttons.
-             new SendPostAsyncTask.Builder(uri.toString(), msg)
-                     .onPreExecute(this::handleLoginOnPre)
-                     .onPostExecute(this::handleLoginOnPost)
-                     .onCancelled(this::handleErrorsInTask)
-                     .build().execute();
+            new SendPostAsyncTask.Builder(uri.toString(), msg)
+                    .onPreExecute(this::handleLoginOnPre)
+                    .onPostExecute(this::handleLoginOnPost)
+                    .onCancelled(this::handleErrorsInTask)
+                    .build().execute();
         }
     }
 

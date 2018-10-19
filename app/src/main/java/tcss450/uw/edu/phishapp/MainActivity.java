@@ -1,12 +1,12 @@
 package tcss450.uw.edu.phishapp;
 
-import tcss450.uw.edu.phishapp.model.Credentials;
-
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import tcss450.uw.edu.phishapp.model.Credentials;
 
 /**
  * Main Entry point that controls login and register activity.
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
      * If login or registration successful launch HomeActivity.
      */
     private void launchHomeActivity() {
+        // old code
 //        Bundle args = new Bundle();
 //        String[] userInfo = new String[2];
 //        userInfo[0] = username;

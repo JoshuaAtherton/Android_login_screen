@@ -177,11 +177,6 @@ public class HomeActivity extends AppCompatActivity
             transaction.commit();
 
         } else if (id == R.id.nav_blog_posts) {
-            //old code commented out
-            // will navigate to RecyclerViewFragment to open it...
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.replace(R.id.homeActivity_fragmentContainer,
-//                    new BlogFragment()).addToBackStack(null).commit();
             Uri uri = new Uri.Builder()
                     .scheme("https")
                     .appendPath(getString(R.string.ep_base_url))
