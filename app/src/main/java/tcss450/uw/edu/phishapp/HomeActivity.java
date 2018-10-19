@@ -21,7 +21,8 @@ import tcss450.uw.edu.phishapp.blog.BlogPost;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         BlogFragment.OnListBlogFragmentInteractionListener,
-        BlogPostFragment.OnBlogPostFragmentInteractionListener  {
+        BlogPostFragment.OnBlogPostFragmentInteractionListener,
+        WaitFragment.OnFragmentInteractionListener              {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,5 +137,23 @@ public class HomeActivity extends AppCompatActivity
         //launch blog post in browser
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
+    }
+
+
+    @Override
+    public void onWaitFragmentInteractionShow() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.register_login_container, new WaitFragment(), "WAIT")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onWaitFragmentInteractionHide() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(getSupportFragmentManager().findFragmentByTag("WAIT"))
+                .commit();
     }
 }
