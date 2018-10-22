@@ -9,6 +9,9 @@
 
     <!-- text fields -->
     <string name="username_prompt">Username</string>
+    <string name="firstname_prompt">First Name</string>
+    <string name="lastname_prompt">Last Name</string>
+    <string name="email_prompt">Email</string>
     <string name="password_prompt">Password</string>
 
     <string name="empty_field_prompt">Field cannot be left blank</string>

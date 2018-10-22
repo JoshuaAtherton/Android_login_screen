@@ -1,11 +1,13 @@
 package tcss450.uw.edu.phishapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -25,17 +27,23 @@ public class SuccessFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_success, container, false);
         Log.d("SuccessFragment", "creating the Display Fragment");
 
-        // use to be for setting username and password
-//        Intent intent = getActivity().getIntent(); // get the intent that started this
-//        if (intent != null) {
-//            Bundle args = intent.getExtras(); // get if the extras were set from starter
-//            if (args != null) {
-//                String[] userInfo = args.getStringArray(getResources().getString(R.string.user_info_key));
-//
-//            }
-//        }
+        Button b = v.findViewById(R.id.LogoutButton_successFrag);
+        b.setOnClickListener(this::logoutClickedSuccess);
 
         return v;
+    }
+
+    /**
+     * Log the user out of the app and redirect to home screen.
+     * @param button the logout button
+     */
+    public void logoutClickedSuccess(View button) {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        Log.d("SuccessFragment", "does it still run in method after call " +
+                "to startActivity on a new intent?"); //the answer is yes!
+        getActivity().finish(); //finish the current activity
     }
 
 }

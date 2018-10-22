@@ -56,6 +56,7 @@ public class HomeActivity extends AppCompatActivity
             }
         }
     }
+    //todo: make logout button restart activity and clear back stack
 
     @Override
     public void onBackPressed() {

@@ -1,6 +1,7 @@
 package tcss450.uw.edu.phishapp.utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONObject;
 
@@ -165,6 +166,7 @@ public class SendPostAsyncTask extends AsyncTask<Void, String, String> {
             urlConnection.setDoOutput(true);
             OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
 
+            Log.d("sendPostAsyncTask", mJsonMsg.toString());
             wr.write(mJsonMsg.toString());
             wr.flush();
             wr.close();

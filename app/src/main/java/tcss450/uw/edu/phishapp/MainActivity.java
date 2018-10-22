@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
      * Launch HomeActivity from LoginFragment. User will then be logged in.
      */
     @Override
-    public void onLoginAttempt(Credentials credentials) {
+    public void onLoginSuccess(Credentials credentials) {
         Log.d("MainActivity", "login button clicked");
 
         launchHomeActivity();
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
      * Launch HomeActivity from RegistrationFragment. User will then be logged in.
      */
     @Override
-    public void onRegisterAttempt(Credentials credentials) {
+    public void onRegisterSuccess(Credentials credentials) {
         Log.d("MainActivity",
                 "user clicked registration button from registration screen");
 

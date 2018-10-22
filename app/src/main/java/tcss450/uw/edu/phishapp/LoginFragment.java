@@ -30,9 +30,6 @@ import tcss450.uw.edu.phishapp.utils.SendPostAsyncTask;
 public class LoginFragment extends Fragment {
 
     private OnLoginFragmentInteractionListener mListener;
-    private EditText username;
-    private EditText password;
-    private View v;
     private Credentials mCredentials;
 
     public LoginFragment() {
@@ -43,12 +40,8 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_login, container, false);
+        View v = inflater.inflate(R.layout.fragment_login, container, false);
         Log.d("LoginFragment", "inflating the fragment");
-
-        // set up username & password text fields
-        username = v.findViewById(R.id.edit_login_email);
-        password = v.findViewById(R.id.edit_login_password);
 
         //set up login and register buttons
         Button b = v.findViewById(R.id.button_login);
@@ -67,19 +60,23 @@ public class LoginFragment extends Fragment {
      * @param buttonClicked the login button clicked
      */
     public void loginClicked(final View buttonClicked) {
+        // get username & password fields text
+        EditText email = getActivity().findViewById(R.id.edit_login_email);
+        EditText password = getActivity().findViewById(R.id.edit_login_password);
+
         boolean userNameBlank,
                 passwordBlank,
                 hasAtSymbol;
 
-        hasAtSymbol = !UserLoginValidation.hasAtSymbol(username, v);
-        userNameBlank = UserLoginValidation.isFieldBlank(username, v);
-        passwordBlank = UserLoginValidation.isFieldBlank(password, v);
+        hasAtSymbol = !UserLoginValidation.hasAtSymbol(email, getView());
+        userNameBlank = UserLoginValidation.isFieldBlank(email, getView());
+        passwordBlank = UserLoginValidation.isFieldBlank(password, getView());
 
         // notify listeners
         if (!userNameBlank && !passwordBlank && hasAtSymbol) {
-
-            Credentials credentials = new Credentials.Builder(username.toString(),
-                    password.toString()).build();
+            Log.d("loginFragment", "in check to attempt a connection with web service");
+            Credentials credentials = new Credentials.Builder(email.getText().toString(),
+                    password.getText().toString()).build();
 
             //build the web service URL
             Uri uri = new Uri.Builder().scheme("https")
@@ -100,15 +97,6 @@ public class LoginFragment extends Fragment {
                     .onCancelled(this::handleErrorsInTask)
                     .build().execute();
         }
-    }
-
-    /**
-     * Handle errors that may occur during the AsyncTask.
-     *
-     * @param result the error message provide from the AsyncTask
-     */
-    private void handleErrorsInTask(String result) {
-        Log.e("ASYNCT_TASK_ERROR", result);
     }
 
     /**
@@ -134,7 +122,7 @@ public class LoginFragment extends Fragment {
             mListener.onWaitFragmentInteractionHide();
             if (success) {
                 //Login was successful. Inform the Activity so it can do its thing.
-                mListener.onLoginAttempt(mCredentials);
+                mListener.onLoginSuccess(mCredentials);
             } else {
                 //Login was unsuccessful. Don’t switch fragments and inform the user
                 ((TextView) getView().findViewById(R.id.edit_login_email))
@@ -151,6 +139,15 @@ public class LoginFragment extends Fragment {
             ((TextView) getView().findViewById(R.id.edit_login_email))
                     .setError("Login Unsuccessful");
         }
+    }
+
+    /**
+     * Handle errors that may occur during the AsyncTask.
+     *
+     * @param result the error message provide from the AsyncTask
+     */
+    private void handleErrorsInTask(String result) {
+        Log.e("ASYNCT_TASK_ERROR", result);
     }
 
     /**
@@ -183,8 +180,8 @@ public class LoginFragment extends Fragment {
      */
     public interface OnLoginFragmentInteractionListener extends
             WaitFragment.OnFragmentInteractionListener {
-        void onLoginAttempt(Credentials credentials);
 
+        void onLoginSuccess(Credentials credentials);
         void onRegisterClicked();
     }
 }

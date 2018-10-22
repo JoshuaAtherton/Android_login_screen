@@ -20,7 +20,7 @@ public class UserLoginValidation {
         return isBlank;
     }
 
-    public static boolean hasAtSymbol(TextView field, View view) {
+    public static boolean hasAtSymbol(EditText field, View view) {
         boolean hasAtSymbol = false;
         if (!UserLoginValidation.searchForChar(field.getText().toString())) {
             field.setError(view.getResources().getString(R.string.missing_at_symbol_prompt));
