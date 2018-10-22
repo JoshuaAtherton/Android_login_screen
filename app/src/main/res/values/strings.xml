@@ -13,6 +13,9 @@
     <string name="lastname_prompt">Last Name</string>
     <string name="email_prompt">Email</string>
     <string name="password_prompt">Password</string>
+    <!-- for easy login testing -->
+    <string name="email_prompt_testing">test@test</string>
+    <string name="password_prompt_testing">test123</string>
 
     <string name="empty_field_prompt">Field cannot be left blank</string>
     <string name="missing_at_symbol_prompt">Must have at least one @ character</string>
