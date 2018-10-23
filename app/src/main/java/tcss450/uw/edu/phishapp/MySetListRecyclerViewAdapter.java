@@ -6,22 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import tcss450.uw.edu.phishapp.SetListFragment.OnListFragmentInteractionListener;
-import tcss450.uw.edu.phishapp.setlist.DummyContent.DummyItem;
+import tcss450.uw.edu.phishapp.SetListFragment.OnSetListFragmentInteractionListener;
+import tcss450.uw.edu.phishapp.setlist.SetListPost;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
+ * {@link RecyclerView.Adapter} that can display a {@link SetListPost} and makes a call to the
+ * specified {@link OnSetListFragmentInteractionListener}.
  */
 public class MySetListRecyclerViewAdapter extends RecyclerView.Adapter<MySetListRecyclerViewAdapter.ViewHolder> {
+    /** List of SetListPost obj that will make up the list on setList */
+    private final List<SetListPost> mValues;
+    private final SetListFragment.OnSetListFragmentInteractionListener mListener;
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
-
-    public MySetListRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MySetListRecyclerViewAdapter(List<SetListPost> items, SetListFragment.OnSetListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,8 +35,9 @@ public class MySetListRecyclerViewAdapter extends RecyclerView.Adapter<MySetList
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mLongDate.setText(mValues.get(position).getLongDate());
+        holder.mLocation.setText(mValues.get(position).getLocation());
+        holder.mVenue.setText(mValues.get(position).getVenue());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +45,7 @@ public class MySetListRecyclerViewAdapter extends RecyclerView.Adapter<MySetList
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+//                    mListener.onSetListFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -58,20 +58,22 @@ public class MySetListRecyclerViewAdapter extends RecyclerView.Adapter<MySetList
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mLongDate;
+        public final TextView mLocation;
+        public final TextView mVenue;
+        public SetListPost mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mLongDate = (TextView) view.findViewById(R.id.textView_longDate_setListFrag);
+            mLocation = (TextView) view.findViewById(R.id.textView_location_setListFrag);
+            mVenue = (TextView) view.findViewById(R.id.textView_venue_setListFrag);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mLocation.getText() + "'";
         }
     }
 }

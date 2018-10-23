@@ -16,8 +16,9 @@ public class SetListPost implements Serializable {
 
     private final String mSetListData;
     private final String mSetListNotes;
+    private final String mVenue;
 
-
+    //todo: add a venue field!!!!!
     /**
      * Helper class using the builder pattern.
      */
@@ -27,6 +28,7 @@ public class SetListPost implements Serializable {
 
         private String mSetListData = "";
         private String mSetListNotes = "";
+        private String mVenue = "";
 
         /**
          *  Construct the builder.
@@ -53,6 +55,11 @@ public class SetListPost implements Serializable {
             return this;
         }
 
+        public Builder addVenue(final String venue) {
+            mVenue = venue;
+            return this;
+        }
+
         /**
          * Construct the SetListPost object.
          * @return fully initialized SetListPostObject
@@ -71,6 +78,7 @@ public class SetListPost implements Serializable {
         this.mLocation = builder.mLocation;
         this.mSetListData = builder.mSetListData;
         this.mSetListNotes = builder.mSetListNotes;
+        this.mVenue = builder.mVenue;
     }
 
     /**
@@ -91,5 +99,7 @@ public class SetListPost implements Serializable {
     public String getSetListData() { return mSetListData; }
 
     public String getSetListNotes() { return mSetListNotes; }
+
+    public String getVenue() { return mVenue; }
 
 }

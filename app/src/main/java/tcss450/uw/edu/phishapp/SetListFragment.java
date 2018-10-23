@@ -10,22 +10,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import tcss450.uw.edu.phishapp.setlist.DummyContent;
-import tcss450.uw.edu.phishapp.setlist.DummyContent.DummyItem;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import tcss450.uw.edu.phishapp.setlist.SetListPost;
+import tcss450.uw.edu.phishapp.setlist.SetListPostGenerator;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnSetListFragmentInteractionListener}
  * interface.
  */
 public class SetListFragment extends Fragment {
 
-
+    public static final String ARG_SET_LIST = "set lists";
+    private List<SetListPost> mSetLists;
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnSetListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,7 +54,11 @@ public class SetListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+//            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT); // was here todo: delete
+            mSetLists = new ArrayList<SetListPost>(
+                    Arrays.asList((SetListPost[]) getArguments().getSerializable(ARG_SET_LIST)));
+        } else {
+            mSetLists = Arrays.asList(SetListPostGenerator.SET_LISTS);
         }
     }
 
@@ -67,7 +76,7 @@ public class SetListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MySetListRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new MySetListRecyclerViewAdapter(mSetLists, mListener));
         }
         return view;
     }
@@ -76,11 +85,11 @@ public class SetListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnSetListFragmentInteractionListener) {
+            mListener = (OnSetListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnSetListFragmentInteractionListener");
         }
     }
 
@@ -93,8 +102,9 @@ public class SetListFragment extends Fragment {
     /**
      *
      */
-    public interface OnListFragmentInteractionListener {
+    public interface OnSetListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onSetListFragmentInteraction(SetListPost item);
     }
 }
+

@@ -91,7 +91,7 @@ public class BlogFragment extends Fragment {
             mListener = (OnListBlogFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnSetListFragmentInteractionListener");
         }
     }
 
