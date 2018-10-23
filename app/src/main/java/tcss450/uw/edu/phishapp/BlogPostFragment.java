@@ -22,9 +22,9 @@ public class BlogPostFragment extends Fragment {
 
     private OnBlogPostFragmentInteractionListener mListener;
     private BlogPost mBlogPost;
-    TextView mTitle;
-    TextView mPublishDate;
-    TextView mFullTeaser;
+    private TextView mTitle;
+    private TextView mPublishDate;
+    private TextView mFullTeaser;
 
     public BlogPostFragment() {
         // Required empty public constructor

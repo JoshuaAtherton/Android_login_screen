@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import tcss450.uw.edu.phishapp.setlist.SetListPost;
 
 
 /**
@@ -17,6 +20,11 @@ import android.view.ViewGroup;
 public class SetListPostFragment extends Fragment {
 
     private OnSetListPostFragmentInteractionListener mListener;
+    private SetListPost mSetListPost;
+    private TextView mLongDate;
+    private TextView mLocation;
+    private TextView mSetListData;
+    private TextView mSetListNotes;
 
     public SetListPostFragment() {
         // Required empty public constructor
@@ -27,18 +35,30 @@ public class SetListPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_set_list_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_set_list_post, container, false);
+
+        setUpTextFields();
+        return view;
+    }
+
+    private void setUpTextFields() {
+        if (mSetListPost != null) {
+
+        }
     }
 
     /**
-     * Clicked button to view full setList in browser.
+     * Action to take when the button is clicked to view full setList in browser.
      * @param viewSetListButton
      */
     public void viewFullSetListButton(View viewSetListButton) {
         if (mListener != null) {
-            mListener.viewFullSetListFragmentInteraction();
+            mListener.viewFullSetList(mSetListPost.getUrl());
         }
     }
+
+    /** To set the SetListPost object of this fragment. */ //todo: needed????
+    public void setSetListPost(SetListPost setListPost) { mSetListPost = setListPost; }
 
     @Override
     public void onAttach(Context context) {
@@ -58,17 +78,10 @@ public class SetListPostFragment extends Fragment {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     *
      */
     public interface OnSetListPostFragmentInteractionListener {
 
-        void viewFullSetListFragmentInteraction();
+        void viewFullSetList(String url);
     }
 }

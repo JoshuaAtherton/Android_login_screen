@@ -103,7 +103,7 @@ public class SetListFragment extends Fragment {
      *
      */
     public interface OnSetListFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onSetListFragmentInteraction(SetListPost item);
     }
 }

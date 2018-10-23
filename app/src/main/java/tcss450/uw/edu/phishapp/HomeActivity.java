@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcss450.uw.edu.phishapp.blog.BlogPost;
+import tcss450.uw.edu.phishapp.setlist.SetListPost;
 import tcss450.uw.edu.phishapp.utils.GetAsyncTask;
 
 public class HomeActivity extends AppCompatActivity
@@ -145,7 +146,6 @@ public class HomeActivity extends AppCompatActivity
                     .appendPath(getString(R.string.ep_get))
                     .build();
             // get the setLists
-            //todo: start the async task
             new GetAsyncTask.Builder(uri.toString())
                     .onPreExecute(this::onWaitFragmentInteractionShow)
                     .onPostExecute(this::handleSetListGetOnPostExecute)
@@ -155,33 +155,6 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    /**
-     *  Method call from BlogFragment.
-     * @param blogItem A BlogPost item
-     */
-    @Override
-    public void onListBlogFragmentInteraction(BlogPost blogItem) {
-
-        BlogPostFragment blogPostFrag = new BlogPostFragment();
-        blogPostFrag.setBlogPost(blogItem);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        transaction.replace(R.id.homeActivity_fragmentContainer, blogPostFrag)
-                .addToBackStack(null).commit();
-    }
-
-    /**
-     *  From BlogPostFragment open a website from the chosen url.
-     * @param url String representation of the url to go to.
-     */
-    @Override
-    public void viewFullPostFragmentInteraction(String url) {
-        Log.d("HomeActivity", "blogPostFragment view full post button clicked");
-        //launch blog post in browser
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
     }
 
     /**
@@ -244,7 +217,79 @@ public class HomeActivity extends AppCompatActivity
      * @param result
      */
     private void handleSetListGetOnPostExecute(final String result) {
-        //todo: implement (like method above)
+        //parse JSON
+        try {
+            JSONObject root = new JSONObject(result);
+            if (root.has("response")) {
+                JSONObject response = root.getJSONObject("response");
+                if (response.has("data")) {
+                    JSONArray data = response.getJSONArray("data");
+                    List<SetListPost> setLists = new ArrayList<>();
+
+                    //get the data from the json formatted object into a SetListPost object
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject jsonSetList = data.getJSONObject(i);
+                        setLists.add(new SetListPost
+                                .Builder(jsonSetList.getString("long_date"),
+                                    jsonSetList.getString("locations"))
+                                .addUrl(jsonSetList.getString("url"))
+                                .addSetListData(jsonSetList.getString("setlistdata"))
+                                .addSetListNotes(jsonSetList.getString("setlistnotes"))
+                                .addVenue(jsonSetList.getString("venue"))
+                                .build());
+                    }
+                    //convert the setLists List to an array object
+                    SetListPost[] setListsAsArray = new SetListPost[setLists.size()];
+                    setListsAsArray = setLists.toArray(setListsAsArray);
+                    //Bundle the setListPost array for easy retrieval later
+                    Bundle bArgs = new Bundle();
+                    bArgs.putSerializable(SetListFragment.ARG_SET_LIST, setListsAsArray);
+
+                    Fragment frag = new SetListFragment();
+                    frag.setArguments(bArgs);
+                    // hide waiting screen & start SetListFragment with the list view overview
+                    onWaitFragmentInteractionHide();
+                    loadFragment(frag);
+                } else {
+                    Log.e("HomeActivity ERROR", "No 'data' key");
+                    onWaitFragmentInteractionHide();
+                }
+            } else {
+                Log.e("HomeActivity ERROR", "No 'response' key");
+                onWaitFragmentInteractionHide();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("ERROR!", e.getMessage());
+            onWaitFragmentInteractionHide();
+        }
+    }
+
+    /**
+     *  Method call from BlogFragment.
+     * @param blogItem A BlogPost item
+     */
+    @Override
+    public void onListBlogFragmentInteraction(BlogPost blogItem) {
+
+        BlogPostFragment blogPostFrag = new BlogPostFragment();
+        blogPostFrag.setBlogPost(blogItem);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.homeActivity_fragmentContainer, blogPostFrag)
+                .addToBackStack(null).commit();
+    }
+
+    /**
+     *  From BlogPostFragment open a website from the chosen url.
+     * @param url String representation of the url to go to.
+     */
+    @Override
+    public void viewFullPostFragmentInteraction(String url) {
+        Log.d("HomeActivity", "blogPostFragment view full post button clicked");
+        //launch blog post in browser
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     @Override
