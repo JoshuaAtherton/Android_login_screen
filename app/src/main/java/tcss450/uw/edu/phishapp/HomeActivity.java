@@ -244,7 +244,7 @@ public class HomeActivity extends AppCompatActivity
      * @param result
      */
     private void handleSetListGetOnPostExecute(final String result) {
-        //todo: implement
+        //todo: implement (like method above)
     }
 
     @Override

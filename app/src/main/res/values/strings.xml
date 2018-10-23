@@ -13,9 +13,9 @@
     <string name="lastname_prompt">Last Name</string>
     <string name="email_prompt">Email</string>
     <string name="password_prompt">Password</string>
-    <!-- for easy login testing -->
-    <string name="email_prompt_testing">test@test</string>
-    <string name="password_prompt_testing">test123</string>
+    <!-- for easy login testing, Commit out two lines below when done -->
+    <string name="email_prompt_testing">joshua9@uw.edu</string>
+    <string name="password_prompt_testing">joshua</string>
 
     <string name="empty_field_prompt">Field cannot be left blank</string>
     <string name="missing_at_symbol_prompt">Must have at least one @ character</string>
@@ -31,10 +31,13 @@
     <string name="login_text">LOGIN</string>
     <string name="register_text">REGISTER</string>
     <string name="full_post_button_text">Full Post</string>
+    <string name="full_setlist_button_text">Full Set List</string>
     <string name="success_logout_button">Logout</string>
 
     <!-- Keys -->
     <string name="user_info_key">user information</string>
+
+    <!-- Sidebar / navigation -->
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

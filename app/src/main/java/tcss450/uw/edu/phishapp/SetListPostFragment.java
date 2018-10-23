@@ -1,7 +1,6 @@
 package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,12 +11,12 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SetListPostFragment.OnFragmentInteractionListener} interface
+ * {@link OnSetListPostFragmentInteractionListener} interface
  * to handle interaction events.
  */
 public class SetListPostFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    private OnSetListPostFragmentInteractionListener mListener;
 
     public SetListPostFragment() {
         // Required empty public constructor
@@ -31,21 +30,24 @@ public class SetListPostFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_set_list_post, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    /**
+     * Clicked button to view full setList in browser.
+     * @param viewSetListButton
+     */
+    public void viewFullSetListButton(View viewSetListButton) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.viewFullSetListFragmentInteraction();
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnSetListPostFragmentInteractionListener) {
+            mListener = (OnSetListPostFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSetListPostFragmentInteractionListener");
         }
     }
 
@@ -65,8 +67,8 @@ public class SetListPostFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnSetListPostFragmentInteractionListener {
+
+        void viewFullSetListFragmentInteraction();
     }
 }
