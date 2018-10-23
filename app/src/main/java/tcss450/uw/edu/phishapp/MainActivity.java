@@ -24,22 +24,13 @@ public class MainActivity extends AppCompatActivity
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         if (findViewById(R.id.register_login_container) != null) {
-            Log.d("MainActivity", "in the first if statement");
-
-            // If being restored from a previous state don't do anything
-            // check to avoid overlapping fragments.
-            if (savedInstanceState != null) {
+            if (savedInstanceState != null) { // check to avoid overlapping fragments.
                 return;
             }
-            Log.d("MainActivity", "past second if statement");
-
-            // Create a new Fragment to be placed in the activity layout
             LoginFragment ulFragment = new LoginFragment();
-
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
             ulFragment.setArguments(getIntent().getExtras());
-
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.register_login_container, ulFragment).commit();
@@ -50,15 +41,7 @@ public class MainActivity extends AppCompatActivity
      * If login or registration successful launch HomeActivity.
      */
     private void launchHomeActivity() {
-        // old code
-//        Bundle args = new Bundle();
-//        String[] userInfo = new String[2];
-//        userInfo[0] = username;
-//        userInfo[1] = password;
-//        args.putStringArray(getResources().getString(R.string.user_info_key), userInfo);
-
         Intent intent = new Intent(this, HomeActivity.class);
-//        intent.putExtras(args); //set a bundle to be sent with intent
         startActivity(intent);
     }
 

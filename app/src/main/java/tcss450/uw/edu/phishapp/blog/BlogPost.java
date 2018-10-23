@@ -10,8 +10,8 @@ import java.io.Serializable;
  *
  * Optional fields include URL, teaser, and Author.
  *
- *
  * @author Charles Bryan
+ * @author Joshua Atherton
  * @version 14 September 2018
  */
 public class BlogPost implements Serializable {

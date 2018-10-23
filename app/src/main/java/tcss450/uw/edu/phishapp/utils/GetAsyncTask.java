@@ -26,6 +26,7 @@ import java.util.function.Consumer;
  * Created by Charles Bryan on 3/22/2018.
  *
  * @author Charles Bryan
+ * @author Joshua Atherton
  * @version 1 OCT 2018
  */
 public class GetAsyncTask extends AsyncTask<Void, String, String> {

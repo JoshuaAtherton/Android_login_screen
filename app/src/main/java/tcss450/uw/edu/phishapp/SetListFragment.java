@@ -10,40 +10,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import tcss450.uw.edu.phishapp.blog.BlogGenerator;
-import tcss450.uw.edu.phishapp.blog.BlogPost;
+import tcss450.uw.edu.phishapp.setlist.DummyContent;
+import tcss450.uw.edu.phishapp.setlist.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListBlogFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class BlogFragment extends Fragment {
+public class SetListFragment extends Fragment {
 
-    public static final String ARG_BLOG_LIST = "blog lists";
-    private List<BlogPost> mBlogs;
-
+    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-
+    // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListBlogFragmentInteractionListener mListener;
+    private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public BlogFragment() {
+    public SetListFragment() {
     }
 
-    // TODO: Customize parameter initialization ?not needed?
+    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static BlogFragment newInstance(int columnCount) {
-        BlogFragment fragment = new BlogFragment();
+    public static SetListFragment newInstance(int columnCount) {
+        SetListFragment fragment = new SetListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -55,18 +49,14 @@ public class BlogFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mBlogs = new ArrayList<BlogPost>(
-                    Arrays.asList((BlogPost[]) getArguments().getSerializable(ARG_BLOG_LIST)));
-        } else {
-            mBlogs = Arrays.asList(BlogGenerator.BLOGS);
+            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_blog_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_setlist_list, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -77,8 +67,7 @@ public class BlogFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyBlogRecyclerViewAdapter(
-                    mBlogs.toArray(new BlogPost[mBlogs.size()]), mListener));
+            recyclerView.setAdapter(new MySetListRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;
     }
@@ -87,8 +76,8 @@ public class BlogFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListBlogFragmentInteractionListener) {
-            mListener = (OnListBlogFragmentInteractionListener) context;
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -102,9 +91,10 @@ public class BlogFragment extends Fragment {
     }
 
     /**
+     *
      */
-    public interface OnListBlogFragmentInteractionListener {
-
-        void onListBlogFragmentInteraction(BlogPost item);
+    public interface OnListFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onListFragmentInteraction(DummyItem item);
     }
 }

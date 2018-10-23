@@ -56,7 +56,6 @@ public class HomeActivity extends AppCompatActivity
             }
         }
     }
-    //todo: make logout button restart activity and clear back stack
 
     @Override
     public void onBackPressed() {
@@ -88,6 +87,101 @@ public class HomeActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Load the fragment into the homeActivity frame.
+     * @param frag
+     */
+    private void loadFragment(Fragment frag) {
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.homeActivity_fragmentContainer, frag)
+                .addToBackStack(null);
+        // Commit the transaction
+        transaction.commit();
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.homeActivity_fragmentContainer, new SuccessFragment());
+            // don't add to the back stack if already on display fragment
+            // prevent multiple home button clicks adding to back stack
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment currentFragment = fragmentManager.findFragmentById(R.id.homeActivity_fragmentContainer);
+            if(!(currentFragment instanceof SuccessFragment)) {
+                  transaction.addToBackStack(null);
+            }
+            transaction.commit();
+
+        } else if (id == R.id.nav_blog_posts) {
+            Uri uri = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_phish))
+                    .appendPath(getString(R.string.ep_blog))
+                    .appendPath(getString(R.string.ep_get))
+                    .build();
+
+            new GetAsyncTask.Builder(uri.toString())
+                    .onPreExecute(this::onWaitFragmentInteractionShow)
+                    .onPostExecute(this::handleBlogGetOnPostExecute)
+                    .build().execute();
+        } else if (id == R.id.nav_set_lists){
+            // load set Lists
+            Uri uri = new Uri.Builder().scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_phish))
+                    .appendPath(getString(R.string.ep_setlists))
+                    .appendPath(getString(R.string.ep_recent))
+                    .appendPath(getString(R.string.ep_get))
+                    .build();
+            // get the setLists
+            //todo: start the async task
+            new GetAsyncTask.Builder(uri.toString())
+                    .onPreExecute(this::onWaitFragmentInteractionShow)
+                    .onPostExecute(this::handleSetListGetOnPostExecute)
+                    .build().execute();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    /**
+     *  Method call from BlogFragment.
+     * @param blogItem A BlogPost item
+     */
+    @Override
+    public void onListBlogFragmentInteraction(BlogPost blogItem) {
+
+        BlogPostFragment blogPostFrag = new BlogPostFragment();
+        blogPostFrag.setBlogPost(blogItem);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        transaction.replace(R.id.homeActivity_fragmentContainer, blogPostFrag)
+                .addToBackStack(null).commit();
+    }
+
+    /**
+     *  From BlogPostFragment open a website from the chosen url.
+     * @param url String representation of the url to go to.
+     */
+    @Override
+    public void onViewFullPostFragmentInteraction(String url) {
+        Log.d("HomeActivity", "blogPostFragment view full post button clicked");
+        //launch blog post in browser
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     /**
@@ -144,88 +238,14 @@ public class HomeActivity extends AppCompatActivity
             onWaitFragmentInteractionHide();
         }
     }
-    /**
-     * Load the fragment into the homeActivity frame.
-     * @param frag
-     */
-    private void loadFragment(Fragment frag) {
-        FragmentTransaction transaction = getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.homeActivity_fragmentContainer, frag)
-                .addToBackStack(null);
-        // Commit the transaction
-        transaction.commit();
-    }
-
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.homeActivity_fragmentContainer, new SuccessFragment());
-            // don't add to the back stack if already on display fragment
-            // prevent multiple home button clicks adding to back stack
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            Fragment currentFragment = fragmentManager.findFragmentById(R.id.homeActivity_fragmentContainer);
-            if(!(currentFragment instanceof SuccessFragment)) {
-                  transaction.addToBackStack(null);
-            }
-            transaction.commit();
-
-        } else if (id == R.id.nav_blog_posts) {
-            Uri uri = new Uri.Builder()
-                    .scheme("https")
-                    .appendPath(getString(R.string.ep_base_url))
-                    .appendPath(getString(R.string.ep_phish))
-                    .appendPath(getString(R.string.ep_blog))
-                    .appendPath(getString(R.string.ep_get))
-                    .build();
-
-            new GetAsyncTask.Builder(uri.toString())
-                    .onPreExecute(this::onWaitFragmentInteractionShow)
-                    .onPostExecute(this::handleBlogGetOnPostExecute)
-                    .build().execute();
-        } else if (id == R.id.nav_set_lists){
-            // load set Lists
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     /**
-     *  Method call from BlogFragment.
-     * @param blogItem A BlogPost item
+     * Get the setList posts.
+     * @param result
      */
-    @Override
-    public void onListFragmentInteraction(BlogPost blogItem) {
-
-        BlogPostFragment blogPostFrag = new BlogPostFragment();
-        blogPostFrag.setBlogPost(blogItem);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        transaction.replace(R.id.homeActivity_fragmentContainer, blogPostFrag)
-                .addToBackStack(null).commit();
+    private void handleSetListGetOnPostExecute(final String result) {
+        //todo: implement
     }
-
-    /**
-     *  From BlogPostFragment open a website from the chosen url.
-     * @param url String representation of the url to go to.
-     */
-    @Override
-    public void onViewFullPostFragmentInteraction(String url) {
-        Log.d("HomeActivity", "blogPostFragment view full post button clicked");
-        //launch blog post in browser
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
-    }
-
 
     @Override
     public void onWaitFragmentInteractionShow() {
