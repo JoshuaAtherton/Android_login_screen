@@ -15,7 +15,6 @@ import tcss450.uw.edu.phishapp.blog.BlogPost;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link BlogPost} and makes a call to the
  * specified {@link OnListBlogFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyBlogRecyclerViewAdapter extends RecyclerView.Adapter<MyBlogRecyclerViewAdapter.ViewHolder> {
 

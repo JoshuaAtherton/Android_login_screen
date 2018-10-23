@@ -177,7 +177,7 @@ public class HomeActivity extends AppCompatActivity
      * @param url String representation of the url to go to.
      */
     @Override
-    public void onViewFullPostFragmentInteraction(String url) {
+    public void viewFullPostFragmentInteraction(String url) {
         Log.d("HomeActivity", "blogPostFragment view full post button clicked");
         //launch blog post in browser
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

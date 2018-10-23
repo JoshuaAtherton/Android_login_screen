@@ -201,7 +201,7 @@ public class RegistrationFragment extends Fragment {
             mListener = (OnRegisterFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSetListPostFragmentInteractionListener");
         }
     }
 

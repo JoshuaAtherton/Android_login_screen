@@ -56,7 +56,7 @@ public class BlogPostFragment extends Fragment {
         if (mBlogPost != null) {
             mTitle.setText(mBlogPost.getTitle());
             mPublishDate.setText(mBlogPost.getPubDate());
-//            mFullTeaser.setText(mBlogPost.getTeaser());
+//            mFullTeaser.setText(mBlogPost.getTeaser()); //get with html
             mFullTeaser.setText(mBlogPost.getStripedHtmlTeaser());
         }
     }
@@ -67,7 +67,7 @@ public class BlogPostFragment extends Fragment {
      */
     public void viewFullPost(View view) {
         if (mListener != null) {
-            mListener.onViewFullPostFragmentInteraction(mBlogPost.getUrl());
+            mListener.viewFullPostFragmentInteraction(mBlogPost.getUrl());
         }
     }
 
@@ -86,7 +86,7 @@ public class BlogPostFragment extends Fragment {
             mListener = (OnBlogPostFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSetListPostFragmentInteractionListener");
         }
     }
 
@@ -101,6 +101,6 @@ public class BlogPostFragment extends Fragment {
      */
     public interface OnBlogPostFragmentInteractionListener {
 
-        void onViewFullPostFragmentInteraction(String url);
+        void viewFullPostFragmentInteraction(String url);
     }
 }

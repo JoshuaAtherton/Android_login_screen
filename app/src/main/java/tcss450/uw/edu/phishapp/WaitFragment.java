@@ -30,7 +30,7 @@ public class WaitFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSetListPostFragmentInteractionListener");
         }
     }
 

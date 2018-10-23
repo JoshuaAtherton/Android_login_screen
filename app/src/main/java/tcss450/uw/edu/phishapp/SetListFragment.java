@@ -21,9 +21,9 @@ import tcss450.uw.edu.phishapp.setlist.DummyContent.DummyItem;
  */
 public class SetListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+
+
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 

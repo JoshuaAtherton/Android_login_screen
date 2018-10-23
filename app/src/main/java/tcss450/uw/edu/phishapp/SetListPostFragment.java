@@ -1,4 +1,4 @@
-package tcss450.uw.edu.phishapp.setlist;
+package tcss450.uw.edu.phishapp;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,20 +8,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import tcss450.uw.edu.phishapp.R;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link setListPostFragment.OnFragmentInteractionListener} interface
+ * {@link SetListPostFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class setListPostFragment extends Fragment {
+public class SetListPostFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public setListPostFragment() {
+    public SetListPostFragment() {
         // Required empty public constructor
     }
 

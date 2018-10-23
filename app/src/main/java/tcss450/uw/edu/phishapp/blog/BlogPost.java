@@ -23,7 +23,7 @@ public class BlogPost implements Serializable {
     private final String mAuthor;
 
     /**
-     * Helper class for building Credentials.
+     * Helper class for building BlogPost.
      *
      * @author Charles Bryan
      */
