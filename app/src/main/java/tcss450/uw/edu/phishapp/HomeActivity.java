@@ -31,6 +31,8 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         BlogFragment.OnListBlogFragmentInteractionListener,
         BlogPostFragment.OnBlogPostFragmentInteractionListener,
+        SetListFragment.OnSetListFragmentInteractionListener,
+        SetListPostFragment.OnSetListPostFragmentInteractionListener,
         WaitFragment.OnFragmentInteractionListener              {
 
     @Override
@@ -143,9 +145,9 @@ public class HomeActivity extends AppCompatActivity
                     .appendPath(getString(R.string.ep_phish))
                     .appendPath(getString(R.string.ep_setlists))
                     .appendPath(getString(R.string.ep_recent))
-                    .appendPath(getString(R.string.ep_get))
                     .build();
             // get the setLists
+            Log.d("HomeActivity", "Nav setList clicked");
             new GetAsyncTask.Builder(uri.toString())
                     .onPreExecute(this::onWaitFragmentInteractionShow)
                     .onPostExecute(this::handleSetListGetOnPostExecute)
@@ -163,7 +165,6 @@ public class HomeActivity extends AppCompatActivity
      */
     private void handleBlogGetOnPostExecute(final String result) {
         //parse JSON
-
         try {
             JSONObject root = new JSONObject(result);
             if (root.has("response")) {
@@ -218,6 +219,7 @@ public class HomeActivity extends AppCompatActivity
      */
     private void handleSetListGetOnPostExecute(final String result) {
         //parse JSON
+        Log.d("HomeActivity","On handleSetListGetOnPostExecute");
         try {
             JSONObject root = new JSONObject(result);
             if (root.has("response")) {
@@ -231,7 +233,7 @@ public class HomeActivity extends AppCompatActivity
                         JSONObject jsonSetList = data.getJSONObject(i);
                         setLists.add(new SetListPost
                                 .Builder(jsonSetList.getString("long_date"),
-                                    jsonSetList.getString("locations"))
+                                    jsonSetList.getString("location"))
                                 .addUrl(jsonSetList.getString("url"))
                                 .addSetListData(jsonSetList.getString("setlistdata"))
                                 .addSetListNotes(jsonSetList.getString("setlistnotes"))
@@ -260,7 +262,7 @@ public class HomeActivity extends AppCompatActivity
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e("ERROR!", e.getMessage());
+            Log.e("HomeActivity ERROR!", e.getMessage());
             onWaitFragmentInteractionHide();
         }
     }
@@ -292,6 +294,30 @@ public class HomeActivity extends AppCompatActivity
         startActivity(browserIntent);
     }
 
+    /**
+     * Replace current fragment with current selected post of type SetListFragment.
+     * @param item selected setListPost item to view
+     */
+    @Override
+    public void onSetListFragmentInteraction(SetListPost item) {
+        SetListPostFragment setListPostFrag = new SetListPostFragment();
+        setListPostFrag.setSetListPost(item);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.homeActivity_fragmentContainer, setListPostFrag)
+                .addToBackStack(null).commit();
+    }
+
+    /**
+     * Button clicked to launch full post content in internet browser.
+     * @param url
+     */
+    @Override
+    public void viewFullSetList(String url) {
+        Log.d("HomeActivity", "SetListPostFragment view full setList button clicked");
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
+
     @Override
     public void onWaitFragmentInteractionShow() {
         getSupportFragmentManager()
@@ -308,4 +334,5 @@ public class HomeActivity extends AppCompatActivity
                 .remove(getSupportFragmentManager().findFragmentByTag("WAIT"))
                 .commit();
     }
+
 }

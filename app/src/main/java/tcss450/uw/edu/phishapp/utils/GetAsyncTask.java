@@ -1,6 +1,7 @@
 package tcss450.uw.edu.phishapp.utils;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -145,13 +146,14 @@ public class GetAsyncTask extends AsyncTask<Void, String, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-
+        Log.d("GetAsyncTask", "starting doInBackground method");
         StringBuilder response = new StringBuilder();
         HttpURLConnection urlConnection = null;
 
         try {
             URL urlObject = new URL(mUrl);
             urlConnection = (HttpURLConnection) urlObject.openConnection();
+            Log.d("GetAsyncTask", urlConnection.toString());
 
             InputStream content = urlConnection.getInputStream();
             BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
@@ -169,6 +171,7 @@ public class GetAsyncTask extends AsyncTask<Void, String, String> {
                 urlConnection.disconnect();
             }
         }
+        Log.d("GetAsyncTask", "ending doInBackground method");
         return response.toString();
     }
 

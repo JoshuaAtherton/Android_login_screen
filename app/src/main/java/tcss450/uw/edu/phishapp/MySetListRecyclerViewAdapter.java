@@ -45,7 +45,7 @@ public class MySetListRecyclerViewAdapter extends RecyclerView.Adapter<MySetList
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-//                    mListener.onSetListFragmentInteraction(holder.mItem);
+                    mListener.onSetListFragmentInteraction(holder.mItem);
                 }
             }
         });

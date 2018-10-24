@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import tcss450.uw.edu.phishapp.setlist.SetListPost;
@@ -37,19 +38,34 @@ public class SetListPostFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_set_list_post, container, false);
 
+        mLongDate = view.findViewById(R.id.textView_longDate_setListPost);
+        mLocation = view.findViewById(R.id.textView_location_setListPost);
+        mSetListData = view.findViewById(R.id.textView_setListData_setListPost);
+        mSetListNotes = view.findViewById(R.id.textView_setListNotes_setListPost);
+
+        Button button = view.findViewById(R.id.button_fullSetList_SetListPost);
+        button.setOnClickListener(this::viewFullSetListButton);
+
         setUpTextFields();
         return view;
     }
 
+    /**
+     * Set the text fields to the correct values if mSetListPost is not null;
+     */
     private void setUpTextFields() {
         if (mSetListPost != null) {
-
+            mLongDate.setText(mSetListPost.getLongDate());
+            mLocation.setText(mSetListPost.getLocation());
+            mSetListData.setText(mSetListPost.getSetListData());
+            mSetListNotes.setText(mSetListPost.getSetListNotes());
         }
     }
 
     /**
-     * Action to take when the button is clicked to view full setList in browser.
-     * @param viewSetListButton
+     * Notify listeners with the url of this setList that the button has been clicked
+     * to open the full setList in the browser.
+     * @param viewSetListButton the view of the button
      */
     public void viewFullSetListButton(View viewSetListButton) {
         if (mListener != null) {
@@ -57,7 +73,10 @@ public class SetListPostFragment extends Fragment {
         }
     }
 
-    /** To set the SetListPost object of this fragment. */ //todo: needed????
+    /**
+     * To set the SetListPost object of this fragment. The selected post to view.
+     * @param setListPost the post data for this post
+     */
     public void setSetListPost(SetListPost setListPost) { mSetListPost = setListPost; }
 
     @Override
