@@ -57,8 +57,8 @@ public class SetListPostFragment extends Fragment {
         if (mSetListPost != null) {
             mLongDate.setText(mSetListPost.getLongDate());
             mLocation.setText(mSetListPost.getLocation());
-            mSetListData.setText(mSetListPost.getSetListData());
-            mSetListNotes.setText(mSetListPost.getSetListNotes());
+            mSetListData.setText(SetListPost.stripStringOfHtml(mSetListPost.getSetListData()));
+            mSetListNotes.setText(SetListPost.stripStringOfHtml(mSetListPost.getSetListNotes()));
         }
     }
 

@@ -37,7 +37,7 @@ public class MySetListRecyclerViewAdapter extends RecyclerView.Adapter<MySetList
         holder.mItem = mValues.get(position);
         holder.mLongDate.setText(mValues.get(position).getLongDate());
         holder.mLocation.setText(mValues.get(position).getLocation());
-        holder.mVenue.setText(mValues.get(position).getVenue());
+        holder.mVenue.setText(SetListPost.stripStringOfHtml(mValues.get(position).getVenue()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

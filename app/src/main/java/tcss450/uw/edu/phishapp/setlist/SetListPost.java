@@ -92,10 +92,10 @@ public class SetListPost implements Serializable {
      * Take in a string and return a new version of that string with html elements removed.
      * @return a string cleaned of html tags
      */
-    public String stripStringOfHtml(final String text) {
+    public static String stripStringOfHtml(final String text) {
         Spanned span = Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT);
         return span.toString();
-    } //todo: use as static of just do within classes?
+    }
 
     /** Getters */
 

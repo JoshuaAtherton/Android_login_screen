@@ -14,8 +14,8 @@
     <string name="email_prompt">Email</string>
     <string name="password_prompt">Password</string>
     <!-- for easy login testing, Commit out two lines below when done -->
-    <string name="email_prompt_testing">joshua9@uw.edu</string>
-    <string name="password_prompt_testing">joshua</string>
+    <!--<string name="email_prompt_testing">joshua9@uw.edu</string>-->
+    <!--<string name="password_prompt_testing">joshua</string>-->
 
     <string name="empty_field_prompt">Field cannot be left blank</string>
     <string name="missing_at_symbol_prompt">Must have at least one @ character</string>
