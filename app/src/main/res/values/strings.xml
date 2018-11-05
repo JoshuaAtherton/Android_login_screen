@@ -22,6 +22,9 @@
     <string name="password_too_short_prompt">Password needs to be at least 6 characters</string>
     <string name="passwords_do_not_match_prompt">Passwords do not match</string>
 
+    <!--action options menu-->
+    <string name="action_logout">Logout</string>
+
     <!-- navigation bar -->
     <string name="nav_home">Home</string>
     <string name="nav_blog_posts">Blog Posts</string>

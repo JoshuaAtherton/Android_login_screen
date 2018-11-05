@@ -40,9 +40,14 @@ public class MainActivity extends AppCompatActivity
     /**
      * If login or registration successful launch HomeActivity.
      */
-    private void launchHomeActivity() {
+    private void launchHomeActivity(Credentials credentials) {
         Intent intent = new Intent(this, HomeActivity.class);
+        // his has line below mine didn't...need? mine didn't pass in credentials to this method
+        // originally either since I do not use them
+//        intent.putExtra(getString(R.string.key_email), (Serializable) credentials);
         startActivity(intent);
+        // End this activity and remove it from the activity back stack
+        finish();
     }
 
     /**
@@ -52,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     public void onLoginSuccess(Credentials credentials) {
         Log.d("MainActivity", "login button clicked");
 
-        launchHomeActivity();
+        launchHomeActivity(credentials);
         //todo: do something with the credentials? pass to next activity?
     }
 
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("MainActivity",
                 "user clicked registration button from registration screen");
 
-        launchHomeActivity();
+        launchHomeActivity(credentials);
         //todo: do something with the credentials? pass to next activity?
     }
 
