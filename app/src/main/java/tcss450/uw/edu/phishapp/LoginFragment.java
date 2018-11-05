@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,38 +35,11 @@ public class LoginFragment extends Fragment {
 
     private OnLoginFragmentInteractionListener mListener;
     private Credentials mCredentials;
+    private String mFirebaseToken;
 
     public LoginFragment() {
         // Required empty public constructor
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        SharedPreferences prefs =
-                getActivity().getSharedPreferences(
-                        getString(R.string.keys_shared_prefs),
-                        Context.MODE_PRIVATE);
-        //retrieve the stored credentials from SharedPrefs
-        if (prefs.contains(getString(R.string.keys_prefs_email)) &&
-                prefs.contains(getString(R.string.keys_prefs_password))) {
-
-            final String email = prefs.getString(getString(R.string.keys_prefs_email), "");
-            final String password = prefs.getString(getString(R.string.keys_prefs_password), "");
-            //Load the two login EditTexts with the credentials found in SharedPrefs
-            EditText emailEdit = getActivity().findViewById(R.id.edit_login_email);
-            emailEdit.setText(email);
-            EditText passwordEdit = getActivity().findViewById(R.id.edit_login_password);
-            passwordEdit.setText(password);
-            doLogin();
-        }
-    }
-
-    public void doLogin() { // his was public void doLogin(String username, String email) {
-        loginClicked(null);
-    }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -82,30 +58,78 @@ public class LoginFragment extends Fragment {
         return v;
     }
 
+    // get the shared preferences and login to app if they are found
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        SharedPreferences prefs =
+                getActivity().getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        //retrieve the stored credentials from SharedPrefs
+        if (prefs.contains(getString(R.string.keys_prefs_email)) &&
+                prefs.contains(getString(R.string.keys_prefs_password))) {
+
+            // Get the credentials found in SharedPrefs
+            final String email = prefs.getString(getString(R.string.keys_prefs_email), "");
+            final String password = prefs.getString(getString(R.string.keys_prefs_password), "");
+
+           getFirebaseToken(email, password);
+        }
+    }
+
     /**
-     * User is attempting to login.
-     * if all rules passed call MainActivity to launch display fragment
-     *
-     * @param buttonClicked the login button clicked
+     * Retrieves the apps unique firebase token
+     * @param email
+     * @param password
      */
-    public void loginClicked(final View buttonClicked) {
-        // get username & password fields text
-        EditText email = getActivity().findViewById(R.id.edit_login_email);
-        EditText password = getActivity().findViewById(R.id.edit_login_password);
+    private void getFirebaseToken(final String email, final String password) {
+        mListener.onWaitFragmentInteractionShow();
+
+        //add this app on this device to listen for the topic all
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
+        //the call to getInstanceId happens asynchronously. task is an onCompleteListener
+        //similar to a promise in JS.
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("FCM: ", "getInstanceId failed", task.getException());
+                        mListener.onWaitFragmentInteractionHide();
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    mFirebaseToken = task.getResult().getToken();
+
+                    Log.d("FCM: ", mFirebaseToken);
+                    //the helper method that initiates login service
+                    doLogin(email, password);
+                });
+        //no code here. wait for the Task to complete.
+    }
+
+    public void doLogin(String email, String password) {
+        //Load the two login EditTexts with correct credentials
+        EditText emailEdit = getActivity().findViewById(R.id.edit_login_email);
+        emailEdit.setText(email);
+        EditText passwordEdit = getActivity().findViewById(R.id.edit_login_password);
+        passwordEdit.setText(password);
 
         boolean userNameBlank,
                 passwordBlank,
                 hasAtSymbol;
 
-        hasAtSymbol = !UserLoginValidation.hasAtSymbol(email, getView());
-        userNameBlank = UserLoginValidation.isFieldBlank(email, getView());
-        passwordBlank = UserLoginValidation.isFieldBlank(password, getView());
+        hasAtSymbol = !UserLoginValidation.hasAtSymbol(emailEdit, getView());
+        userNameBlank = UserLoginValidation.isFieldBlank(emailEdit, getView());
+        passwordBlank = UserLoginValidation.isFieldBlank(passwordEdit, getView());
 
         // notify listeners
         if (!userNameBlank && !passwordBlank && hasAtSymbol) {
             Log.d("loginFragment", "in check to attempt a connection with web service");
-            Credentials credentials = new Credentials.Builder(email.getText().toString(),
-                    password.getText().toString()).build();
+            Credentials credentials = new Credentials.Builder(emailEdit.getText().toString(),
+                    passwordEdit.getText().toString()).build();
 
             //build the web service URL
             Uri uri = new Uri.Builder().scheme("https")
@@ -129,10 +153,24 @@ public class LoginFragment extends Fragment {
     }
 
     /**
+     * User is attempting to login.
+     * if all rules passed call MainActivity to launch display fragment
+     *
+     * @param buttonClicked the login button clicked
+     */
+    public void loginClicked(final View buttonClicked) {
+        // get username & password fields text
+        EditText email = getActivity().findViewById(R.id.edit_login_email);
+        EditText password = getActivity().findViewById(R.id.edit_login_password);
+
+        getFirebaseToken(email.getText().toString(), password.getText().toString());
+    }
+
+    /**
      * Handle the setup of the UI before the HTTP call to the webservice.
      */
     private void handleLoginOnPre() {
-        mListener.onWaitFragmentInteractionShow();
+//        mListener.onWaitFragmentInteractionShow();
     }
 
     /**
@@ -193,7 +231,6 @@ public class LoginFragment extends Fragment {
         prefs.edit().putString(getString(R.string.keys_prefs_email), credentials.getEmail()).apply();
         prefs.edit().putString(getString(R.string.keys_prefs_password), credentials.getPassword()).apply();
     }
-
 
     /**
      * Call MainActivity to launch RegistrationFragment.
