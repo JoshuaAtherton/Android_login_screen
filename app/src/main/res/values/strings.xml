@@ -22,6 +22,8 @@
     <string name="password_too_short_prompt">Password needs to be at least 6 characters</string>
     <string name="passwords_do_not_match_prompt">Passwords do not match</string>
 
+    <string name="chat_text_hint">Write a message</string>
+
     <!--action options menu-->
     <string name="action_logout">Logout</string>
 
@@ -29,6 +31,7 @@
     <string name="nav_home">Home</string>
     <string name="nav_blog_posts">Blog Posts</string>
     <string name="nav_set_lists">Set Lists</string>
+    <string name="global_chat">Global Chat</string>
 
     <!-- buttons -->
     <string name="login_text">LOGIN</string>

@@ -135,15 +135,24 @@ public class LoginFragment extends Fragment {
             Uri uri = new Uri.Builder().scheme("https")
                     .appendPath(getString(R.string.ep_base_url))
                     .appendPath(getString(R.string.ep_login))
+                    .appendPath(getString(R.string.ep_with_token))
                     .build();
 
             //build the JSONObject
             JSONObject msg = credentials.asJSONObject();
+            try {
+                msg.put("token", mFirebaseToken);
+//                Log.d("LoginFragment", msg.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             mCredentials = credentials;
 
             // instantiate and execute the AsyncTask.
             // Feel free to add a handler for onPreExecution so that a progress bar
             // is displayed or maybe disable buttons.
+            Log.d("LoginFragment", uri.toString());
             new SendPostAsyncTask.Builder(uri.toString(), msg)
                     .onPreExecute(this::handleLoginOnPre)
                     .onPostExecute(this::handleLoginOnPost)

@@ -16,6 +16,10 @@
             android:id="@+id/nav_set_lists"
             android:icon="@drawable/ic_menu_set_lists"
             android:title="@string/nav_set_lists" />
+        <item
+            android:id="@+id/global_chat"
+            android:icon="@drawable/ic_global_chat"
+            android:title="@string/global_chat" />
     </group>
 
 </menu>

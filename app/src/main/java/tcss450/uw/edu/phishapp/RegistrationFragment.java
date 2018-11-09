@@ -110,6 +110,7 @@ public class RegistrationFragment extends Fragment {
                     .appendPath(getString(R.string.ep_register))
                     .build();
 
+            Log.d("RegistrationFragment", uri.toString());
             //build the Json object from the credentials
             JSONObject msg = credentials.asJSONObject();
             mCredentials = credentials;
