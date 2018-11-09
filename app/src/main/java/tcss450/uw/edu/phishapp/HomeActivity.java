@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tcss450.uw.edu.phishapp.blog.BlogPost;
+import tcss450.uw.edu.phishapp.model.Credentials;
 import tcss450.uw.edu.phishapp.setlist.SetListPost;
 import tcss450.uw.edu.phishapp.utils.GetAsyncTask;
 
@@ -40,6 +41,33 @@ public class HomeActivity extends AppCompatActivity
         SetListFragment.OnSetListFragmentInteractionListener,
         SetListPostFragment.OnSetListPostFragmentInteractionListener,
         WaitFragment.OnFragmentInteractionListener              {
+
+    private String mEmail;
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_home);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+//
+//        // add display fragment to this frame
+//        if (savedInstanceState == null) {
+//            if (findViewById(R.id.homeActivity_fragmentContainer) != null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.homeActivity_fragmentContainer, new SuccessFragment()).commit();
+//            }
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +85,34 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // add display fragment to this frame
-        if (savedInstanceState == null) {
+        if(savedInstanceState == null) {
             if (findViewById(R.id.homeActivity_fragmentContainer) != null) {
+                Credentials credentials = (Credentials) getIntent()
+                        .getSerializableExtra(getString(R.string.keys_prefs_email));
+                String emailAddress = mEmail = credentials.getEmail();
+                final Bundle args = new Bundle();
+                args.putString(getString(R.string.keys_prefs_email), emailAddress);
+
+                // boolean for debugging only
+                boolean s = getIntent().getBooleanExtra(
+                        getString(R.string.keys_intent_notification_msg), false);
+                Log.d("HomeActivity", String.valueOf(s));
+                Fragment fragment;
+                if (getIntent().getBooleanExtra(
+                        getString(R.string.keys_intent_notification_msg), false)) {
+                    fragment = new ChatFragment();
+                } else {
+                    fragment = new SuccessFragment();
+                    fragment.setArguments(args);
+                }
+
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.homeActivity_fragmentContainer, new SuccessFragment()).commit();
+                        .add(R.id.homeActivity_fragmentContainer, fragment)
+                        .commit();
             }
         }
     }
+
 
     @Override
     public void onBackPressed() {

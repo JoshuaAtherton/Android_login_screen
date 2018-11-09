@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.io.Serializable;
+
 import tcss450.uw.edu.phishapp.model.Credentials;
 
 /**
@@ -16,39 +18,48 @@ public class MainActivity extends AppCompatActivity
         implements LoginFragment.OnLoginFragmentInteractionListener,
         RegistrationFragment.OnRegisterFragmentInteractionListener {
 
+    private boolean mLoadFromChatNotification = false;
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
-        if (findViewById(R.id.register_login_container) != null) {
-            if (savedInstanceState != null) { // check to avoid overlapping fragments.
-                return;
+
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getExtras().containsKey("type")) {
+                Log.d("MainActivity", "onCreate in if statement");
+                Log.d(TAG, "type of message: " + getIntent().getExtras().getString("type"));
+                mLoadFromChatNotification = getIntent().getExtras().getString("type").equals("contact");
+                Log.d("MainActivity", String.valueOf(mLoadFromChatNotification));
+            } else {
+                Log.d(TAG, "NO MESSAGE");
             }
-            LoginFragment ulFragment = new LoginFragment();
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            ulFragment.setArguments(getIntent().getExtras());
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.register_login_container, ulFragment).commit();
+        }
+
+        if (savedInstanceState == null) { // check to avoid overlapping fragments.
+            if (findViewById(R.id.register_login_container) != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.register_login_container, new LoginFragment())
+                        .commit();
+            }
         }
     }
+
 
     /**
      * If login or registration successful launch HomeActivity.
      */
-    private void launchHomeActivity(Credentials credentials) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        // his has line below mine didn't...need? mine didn't pass in credentials to this method
-        // originally either since I do not use them
-//        intent.putExtra(getString(R.string.key_email), (Serializable) credentials);
-        startActivity(intent);
-        // End this activity and remove it from the activity back stack
+    private void login(final Credentials credentials) {
+        Intent i = new Intent(this, HomeActivity.class);
+        i.putExtra(getString(R.string.keys_prefs_email), (Serializable) credentials);
+        i.putExtra(getString(R.string.keys_intent_notification_msg), mLoadFromChatNotification);
+        startActivity(i);
+        //Ends this Activity and removes it from the Activity back stack.
         finish();
     }
+
 
     /**
      * Launch HomeActivity from LoginFragment. User will then be logged in.
@@ -57,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     public void onLoginSuccess(Credentials credentials) {
         Log.d("MainActivity", "login button clicked");
 
-        launchHomeActivity(credentials);
+        login(credentials);
         //todo: do something with the credentials? pass to next activity?
     }
 
@@ -69,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         Log.d("MainActivity",
                 "user clicked registration button from registration screen");
 
-        launchHomeActivity(credentials);
+        login(credentials);
         //todo: do something with the credentials? pass to next activity?
     }
 
